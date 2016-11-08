@@ -34,9 +34,10 @@
 </div>
 
 <div class="container">
-    <div class="well well-sm col-xs-4 col-lg-4" th:each="cat,iterStat : ${category}">
-        <strong th:text="${cat.name}">Category Title</strong>
-    </div>
+    <form action="/filter/category" method="get" th:each="cat,iterStat : ${category}">
+        <input type="hidden" name="id" th:value = "*{cat.getId()}"/>
+        <input type="submit" class="well well-sm col-xs-2 col-lg-2" th:value="${cat.name}"></input>
+    </form>
 </div>
 
     <div class="container">
