@@ -47,7 +47,7 @@
                 Product Categories <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a th:href="@{'~/filter/category'(id=${cat.getId()})}" th:each="cat,iterStat : ${categories}" th:text="${cat.name}"></a></li>
+                <li><a th:href="@{'~/filter'(id=${cat.getId()},filterBy='productCategory')}" th:each="cat,iterStat : ${categories}" th:text="${cat.name}"></a></li>
             </ul>
         </li>
 
@@ -56,7 +56,7 @@
                 Suppliers <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a th:href="@{'~/filter/supplier'(id=${sup.getId()})}" th:each="sup,iterStat : ${suppliers}" th:text="${sup.name}"></a></li>
+                <li><a th:href="@{'~/filter'(id=${sup.getId()},filterBy='supplier')}" th:each="sup,iterStat : ${suppliers}" th:text="${sup.name}"></a></li>
             </ul>
         </li>
     </ul>
