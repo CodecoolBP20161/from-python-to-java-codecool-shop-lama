@@ -1,5 +1,7 @@
 package com.codecool.shop.order;
 
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 
 import java.util.ArrayList;
@@ -19,8 +21,15 @@ public class Order implements Orderable {
         this.status = "new";
     }
 
-    public void addLineItem(Product product){
-        itemsToOrder.add(new LineItem(product));
+    public void addLineItem(String id){
+        int idToFind = Integer.parseInt(id);
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        for (Product product : productDataStore.getAll()){
+            if (idToFind == product.getId()){
+                itemsToOrder.add(new LineItem(product));
+            }
+        }
+        System.out.println(itemsToOrder);
     }
 
     public int sumProductsQuantity(){

@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.order.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import static spark.Spark.*;
@@ -26,9 +27,14 @@ public class Main {
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/filter/category", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
-        get("/add/:id", ProductController::renderProducts, new ThymeleafTemplateEngine());
+        get("/add/:id", (req, res) -> {
+            // TODO: Need a session
+            Order order = new Order();
+            order.addLineItem(req.params("id"));
+            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
 ////        get("/hello", (req, res) -> "Hello World");
 
+        });
     }
 
     public static void populateData() {
