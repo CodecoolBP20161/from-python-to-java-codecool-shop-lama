@@ -25,8 +25,8 @@ public class Main {
         populateData();
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter/category", ProductController::renderFilteredProductsByCategory, new ThymeleafTemplateEngine());
-        get("/filter/supplier", ProductController::renderFilteredProductsBySupplier, new ThymeleafTemplateEngine());
+        get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
+        get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
         get("/add/:id", (req, res) -> {
             // TODO: Need a session
