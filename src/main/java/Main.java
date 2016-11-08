@@ -24,8 +24,13 @@ public class Main {
         populateData();
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter/category", ProductController::renderProducts, new ThymeleafTemplateEngine());
-////        get("/hello", (req, res) -> "Hello World");
+        get("/filter/category", ProductController::renderFilteredProductsByCategory, new ThymeleafTemplateEngine());
+        get("/filter/supplier", ProductController::renderFilteredProductsBySupplier, new ThymeleafTemplateEngine());
+//        get("/hello", (req, res) -> {
+//            req.session().attribute("user", "foo");
+//            return "ok";
+//        });
+//        get("/helloo", (req, res) -> req.session().attributes());
 
     }
 
