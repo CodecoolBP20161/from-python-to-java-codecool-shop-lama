@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Order implements Orderable {
 
     String id;
-    ArrayList<LineItem> itemsToOrder = new ArrayList<>();
+    static final ArrayList<LineItem> itemsToOrder = new ArrayList<>();
     String status;
 
     public Order() {
@@ -21,7 +21,7 @@ public class Order implements Orderable {
         this.status = "new";
     }
 
-    public void addLineItem(String id){
+    public static void addLineItem(String id){
         int idToFind = Integer.parseInt(id);
         ProductDao productDataStore = ProductDaoMem.getInstance();
         for (Product product : productDataStore.getAll()){
@@ -32,7 +32,7 @@ public class Order implements Orderable {
         System.out.println(itemsToOrder);
     }
 
-    public int sumProductsQuantity(){
+    public static int sumProductsQuantity(){
         return itemsToOrder.size();
     }
 

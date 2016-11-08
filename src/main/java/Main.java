@@ -30,8 +30,7 @@ public class Main {
 
         get("/add/:id", (req, res) -> {
             // TODO: Need a session
-            Order order = new Order();
-            order.addLineItem(req.params("id"));
+            Order.addLineItem(req.params("id"));
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
 
         });
