@@ -25,6 +25,8 @@ public class Main {
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/filter/category", ProductController::renderProducts, new ThymeleafTemplateEngine());
+
+        get("/add/:id", ProductController::renderProducts, new ThymeleafTemplateEngine());
 ////        get("/hello", (req, res) -> "Hello World");
 
     }
