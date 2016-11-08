@@ -36,7 +36,9 @@
 
 
 <div class="container">
-
+    <div class="well well-sm">
+        <strong th:text="${category.name}">Category Title</strong>
+    </div>
     <div class="chart">
         <p th:text="${chart}">asdas</p>
     </div>
@@ -50,14 +52,26 @@
         </ul>
     </div>
 
-    <div class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-            Suppliers <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a th:href="@{'~/filter/supplier'(id=${sup.getId()})}" th:each="sup,iterStat : ${supplier}" th:text="${sup.name}"></a></li>
-        </ul>
-    </div>
+    <ul class="nav nav-pills">
+        <li class="active"><a href="/">Show all</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                Product Categories <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{'~/filter/category'(id=${cat.getId()})}" th:each="cat,iterStat : ${categories}" th:text="${cat.name}"></a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                Suppliers <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{'~/filter/supplier'(id=${sup.getId()})}" th:each="sup,iterStat : ${suppliers}" th:text="${sup.name}"></a></li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
     <div class="container">
