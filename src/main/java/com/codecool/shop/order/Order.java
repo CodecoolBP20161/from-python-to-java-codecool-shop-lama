@@ -12,13 +12,17 @@ import java.util.UUID;
  */
 public class Order implements Orderable {
 
-    String id;
-    ArrayList<LineItem> itemsToOrder = new ArrayList<>();
-    String status;
+    private String id;
+    private ArrayList<LineItem> itemsToOrder;
+    private String status;
 
-    public Order() {
+    {
+        itemsToOrder = new ArrayList<>();
         this.id = UUID.randomUUID().toString();
         this.status = "new";
+    }
+
+    public Order() {
     }
 
     public void addLineItem(String id){
@@ -38,8 +42,8 @@ public class Order implements Orderable {
 
     public float sumProductsPrice(){
         float sumPrice = 0;
-        for (int i=0;i<itemsToOrder.size();i++){
-            sumPrice += itemsToOrder.get(i).getPrice();
+        for (LineItem anItemsToOrder : itemsToOrder) {
+            sumPrice += anItemsToOrder.getPrice();
         }
         return sumPrice;
     }
