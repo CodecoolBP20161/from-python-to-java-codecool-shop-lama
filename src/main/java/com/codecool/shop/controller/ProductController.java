@@ -32,7 +32,6 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("category", new ProductCategory("All Category", "All Category", "All Category"));
         params.put("supplier", new ProductCategory("All Supplier", "All Supplier", "All Supplier"));
-        System.out.println(userOrder);
         params.put("cart", userOrder.sumProductsQuantity());
 
         if (req.queryParams("supId") != null) {

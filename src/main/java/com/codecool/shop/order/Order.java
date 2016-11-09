@@ -39,7 +39,6 @@ public class Order implements Orderable {
                 }
             }
         }
-        System.out.println(itemsToOrder);
     }
 
     public int sumProductsQuantity(){
