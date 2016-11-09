@@ -41,11 +41,11 @@ public class Order implements Orderable {
         }
     }
 
-    public void changeQuantity(String id) {
+    public void changeQuantity(String id, int dif) {
         int idToFind = Integer.parseInt(id);
         for (LineItem item : itemsToOrder) {
             if (idToFind == item.getProduct().getId()) {
-                item.setQuantity(-1);
+                item.setQuantity(dif);
                 if (item.getQuantity() == 0) itemsToOrder.remove(item);
                 break;
             }
