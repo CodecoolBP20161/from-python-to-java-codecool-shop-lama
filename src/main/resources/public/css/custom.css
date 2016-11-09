@@ -64,3 +64,18 @@
 {
     margin: 0 11px 11px;
 }
+
+.chart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 80px;
+    height: 80px;
+    background-color: orangered;
+    color: white;
+    font-size: 40px;
+    text-decoration: solid;
+    text-align: right;
+    vertical-align: top;
+    border-radius: 5px;
+}

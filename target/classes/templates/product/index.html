@@ -33,17 +33,36 @@
     <h1>Codecool Shop</h1>
 </div>
 
+
+
 <div class="container">
-    <form action="/filter/category" method="get" th:each="cat,iterStat : ${category}">
-        <input type="hidden" name="id" th:value = "*{cat.getId()}"/>
-        <input type="submit" class="well well-sm col-xs-2 col-lg-2" th:value="${cat.name}"></input>
-    </form>
-</div>
-<div class="container">
-    <form action="/filter/supplier" method="get" th:each="sup,iterStat : ${supplier}">
-        <input type="hidden" name="id" th:value = "*{sup.getId()}"/>
-        <input type="submit" class="well well-sm col-xs-2 col-lg-2" th:value="${sup.name}"></input>
-    </form>
+    <div class="well well-sm">
+        <strong th:text="${category.name}">Category Title</strong>
+    </div>
+    <div class="chart">
+        <p th:text="${chart}">asdas</p>
+    </div>
+
+    <ul class="nav nav-pills">
+        <li class="active"><a href="/">Show all</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                Product Categories <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{'~/filter'(id=${cat.getId()},filterBy='productCategory')}" th:each="cat,iterStat : ${categories}" th:text="${cat.name}"></a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                Suppliers <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a th:href="@{'~/filter'(id=${sup.getId()},filterBy='supplier')}" th:each="sup,iterStat : ${suppliers}" th:text="${sup.name}"></a></li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
     <div class="container">

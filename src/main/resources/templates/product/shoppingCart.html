@@ -46,7 +46,7 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="li,iterStat : ${order}">
+            <th:block th:each="li,iterStat : ${order.getItemsToOrder()}">
                 <tr>
                     <td th:text="*{li.getName()}">asd</td>
                     <td th:text="*{li.getQuantity()}">asd</td>
@@ -58,6 +58,7 @@
         </table>
     </div>
     <h2>Total Price:</h2>
+    <h2 th:text="*{order.sumProductsPrice()}">Total Price</h2>
 
 </div>
 

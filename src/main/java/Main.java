@@ -25,17 +25,14 @@ public class Main {
         populateData();
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter/category", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter/supplier", ProductController::renderFilteredProductsBySupplier, new ThymeleafTemplateEngine());
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
-        get("/add/:id", (req, res) -> {
-            // TODO: Need a session
-            Order order = new Order();
-            order.addLineItem(req.params("id"));
-            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
-////        get("/hello", (req, res) -> "Hello World");
+        get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
-        });
+//        get("/add/:id", (req, res) -> {
+//            // TODO: Need a session
+//            Order.addLineItem(req.params("id"));
+//            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
+//        });
     }
 
     public static void populateData() {
