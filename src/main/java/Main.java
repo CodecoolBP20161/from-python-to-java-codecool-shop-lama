@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.order.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import static spark.Spark.*;
@@ -24,16 +25,17 @@ public class Main {
         populateData();
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter/category", ProductController::renderFilteredProductsByCategory, new ThymeleafTemplateEngine());
+        get("/filter/category", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/filter/supplier", ProductController::renderFilteredProductsBySupplier, new ThymeleafTemplateEngine());
-        get("/add/:id", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
-//        get("/hello", (req, res) -> {
-//            req.session().attribute("user", "foo");
-//            return "ok";
-//        });
-//        get("/helloo", (req, res) -> req.session().attributes());
+        get("/add/:id", (req, res) -> {
+            // TODO: Need a session
+            Order order = new Order();
+            order.addLineItem(req.params("id"));
+            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
+////        get("/hello", (req, res) -> "Hello World");
 
+        });
     }
 
     public static void populateData() {
