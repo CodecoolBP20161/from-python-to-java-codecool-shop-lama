@@ -24,19 +24,17 @@ public class Main {
 
         populateData();
 
-        get("/", (request, response) -> {
-            // available session check
-            if (request.session().isNew()) {
-                request.session().attribute("userOrder", new Order());
-            }
-            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
-        });
+        get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
-            ((Order) request.session().attribute("userOrder")).addLineItem(request.queryParams("id"));
-            response.redirect("/");
-            return null;
+            // available session check
+            if (request.session().attribute("userOrder") == null) {
+                request.session().attribute("userOrder", new Order());
+            }
+            Order userOrder = request.session().attribute("userOrder");
+            userOrder.addLineItem(Integer.parseInt(request.queryParams("id")));
+            return userOrder.sumProductsQuantity();
         });
 
         post("/remove", (req, res) -> {

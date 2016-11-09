@@ -22,13 +22,13 @@ public class ProductController {
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         Order userOrder = req.session().attribute("userOrder");
+
         Map params = new HashMap<>();
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
         params.put("categories", productCategoryDataStore.getAll());
         params.put("category", new ProductCategory("All Category", "All Category", "All Category"));
         params.put("supplier", new ProductCategory("All Supplier", "All Supplier", "All Supplier"));
-        params.put("cart", userOrder.sumProductsQuantity());
 
         if (req.queryParams("supId") != null) {
             int supId = Integer.parseInt(req.queryParams("supId"));
@@ -45,8 +45,7 @@ public class ProductController {
 
     public static ModelAndView renderCart(Request req, Response res) {
         Map params = new HashMap<>();
-        Order userOrder = req.session().attribute("userOrder");
-        params.put("order", userOrder);
+        params.put("order", req.session().attribute("userOrder"));
         return new ModelAndView(params, "product/shoppingCart");
     }
 }

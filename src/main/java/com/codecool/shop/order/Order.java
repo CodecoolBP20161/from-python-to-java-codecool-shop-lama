@@ -25,20 +25,25 @@ public class Order implements Orderable {
     public Order() {
     }
 
-    public void addLineItem(String id){
-        int idToFind = Integer.parseInt(id);
+    public ArrayList<LineItem> getItemsToOrder(){
+        return itemsToOrder;
+    }
+
+    public void addLineItem(int id){
         ProductDao productDataStore = ProductDaoMem.getInstance();
-        int where = this.containsLineItem(idToFind);
         for (Product product : productDataStore.getAll()){
-            if (idToFind == product.getId()){
-                if (where == -1){
-                    itemsToOrder.add(new LineItem(product));
-                }
-                else{
-                    itemsToOrder.get(where).increaseQuantity();
-                }
+            if (id == product.getId()) addItemToOrder(product);
+        }
+    }
+
+    private void addItemToOrder(Product product){
+        for (LineItem lineItem : itemsToOrder) {
+            if (lineItem.getProduct().equals(product)){
+                lineItem.increaseQuantity();
+                return;
             }
         }
+        itemsToOrder.add(new LineItem(product));
     }
 
     public void changeQuantity(String id, int dif) {
@@ -65,7 +70,7 @@ public class Order implements Orderable {
 
     public int sumProductsQuantity(){
         int sumQuantity = 0;
-        for (LineItem anItemsToOrder : itemsToOrder) {
+        for (LineItem anItemsToOrder: itemsToOrder) {
             sumQuantity += anItemsToOrder.getQuantity();
         }
         return sumQuantity;
@@ -77,18 +82,6 @@ public class Order implements Orderable {
             sumPrice += anItemsToOrder.getPrice();
         }
         return sumPrice;
-    }
-
-    private int containsLineItem(int id){
-        for (int i=0; i<itemsToOrder.size();i++){
-            if (itemsToOrder.get(i).getId() == id)
-                return i;
-        }
-        return -1;
-    }
-
-    public ArrayList<LineItem> getItemsToOrder(){
-        return itemsToOrder;
     }
 
     @Override
