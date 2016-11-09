@@ -36,6 +36,28 @@ public class Order implements Orderable {
         System.out.println(itemsToOrder);
     }
 
+    public void changeQuantity(String id) {
+        int idToFind = Integer.parseInt(id);
+        for (LineItem item : itemsToOrder) {
+            if (idToFind == item.getProduct().getId()) {
+                item.setQuantity(-1);
+                if (item.getQuantity() == 0) itemsToOrder.remove(item);
+                break;
+            }
+        }
+    }
+
+    public void removeItem(String id){
+        int idToFind = Integer.parseInt(id);
+        for (LineItem item : itemsToOrder){
+            if (idToFind == item.getProduct().getId()){
+                itemsToOrder.remove(item);
+                break;
+            }
+        }
+        System.out.println(itemsToOrder);
+    }
+
     public int sumProductsQuantity(){
         return itemsToOrder.size();
     }

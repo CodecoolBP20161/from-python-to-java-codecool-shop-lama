@@ -39,6 +39,17 @@ public class Main {
             ((Order) req.session().attribute("userOrder")).addLineItem(req.params("id"));
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
         });
+
+        post("/remove", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"));
+            return new ThymeleafTemplateEngine().render(ProductController.renderCart(req, res));
+        });
+
+        post("/remove_all", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).removeItem(req.queryParams("id"));
+            return new ThymeleafTemplateEngine().render(ProductController.renderCart(req, res));
+        });
+
     }
 
     public static void populateData() {

@@ -39,6 +39,10 @@ public class LineItem {
         return quantity;
     }
 
+    public void setQuantity(int difference) {
+        this.quantity += difference;
+    }
+
     public Product getProduct(){
         return product;
     }
