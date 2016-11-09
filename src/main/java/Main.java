@@ -38,6 +38,25 @@ public class Main {
             response.redirect("/");
             return null;
         });
+
+        post("/remove", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), -1);
+            res.redirect("/cart");
+            return null;
+        });
+
+        post("/add_item", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), 1);
+            res.redirect("/cart");
+            return null;
+        });
+
+        post("/remove_all", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).removeItem(req.queryParams("id"));
+            res.redirect("/cart");
+            return null;
+        });
+
     }
 
     public static void populateData() {

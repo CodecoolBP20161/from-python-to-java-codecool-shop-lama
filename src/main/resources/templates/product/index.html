@@ -40,9 +40,11 @@
         <strong th:text="${category.name}">Category Title</strong>
         <strong class="pull-right" th:text="${supplier.name}">Supplier Title</strong>
     </div>
-    <div class="chart">
+
+    <div class="cart">
         <a th:href="@{~/cart}" th:text="${cart}">Number of products in cart</a>
     </div>
+
 
     <ul class="nav nav-pills">
         <li class="active"><a href="/">Show all</a></li>
