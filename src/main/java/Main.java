@@ -41,12 +41,14 @@ public class Main {
 
         post("/remove", (req, res) -> {
             ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"));
-            return new ThymeleafTemplateEngine().render(ProductController.renderCart(req, res));
+            res.redirect("/cart");
+            return null;
         });
 
         post("/remove_all", (req, res) -> {
             ((Order) req.session().attribute("userOrder")).removeItem(req.queryParams("id"));
-            return new ThymeleafTemplateEngine().render(ProductController.renderCart(req, res));
+            res.redirect("/cart");
+            return null;
         });
 
     }
