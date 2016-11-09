@@ -49,14 +49,9 @@ public class ProductController {
     }
 
     public static ModelAndView renderCart(Request req, Response res) {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
         Map params = new HashMap<>();
-        Order lineItems = new Order();
-        List<Product> products = productDataStore.getAll();
-        for (int i=0; i<products.size(); i++){
-            lineItems.addLineItem(Integer.toString(products.get(i).getId()));
-        }
-        params.put("order", lineItems);
+        Order userOrder = req.session().attribute("userOrder");
+        params.put("order", userOrder);
         return new ModelAndView(params, "product/shoppingCart");
     }
 }

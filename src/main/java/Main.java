@@ -35,7 +35,6 @@ public class Main {
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
         get("/add/:id", (req, res) -> {
-            // TODO: Need a session
             ((Order) req.session().attribute("userOrder")).addLineItem(req.params("id"));
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
         });

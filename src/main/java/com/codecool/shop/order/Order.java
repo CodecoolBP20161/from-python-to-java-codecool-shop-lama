@@ -28,16 +28,26 @@ public class Order implements Orderable {
     public void addLineItem(String id){
         int idToFind = Integer.parseInt(id);
         ProductDao productDataStore = ProductDaoMem.getInstance();
+        int where = this.containsLineItem(idToFind);
         for (Product product : productDataStore.getAll()){
             if (idToFind == product.getId()){
-                itemsToOrder.add(new LineItem(product));
+                if (where == -1){
+                    itemsToOrder.add(new LineItem(product));
+                }
+                else{
+                    itemsToOrder.get(where).increaseQuantity();
+                }
             }
         }
         System.out.println(itemsToOrder);
     }
 
     public int sumProductsQuantity(){
-        return itemsToOrder.size();
+        int sumQuantity = 0;
+        for (LineItem anItemsToOrder : itemsToOrder) {
+            sumQuantity += anItemsToOrder.getQuantity();
+        }
+        return sumQuantity;
     }
 
     public float sumProductsPrice(){
@@ -46,6 +56,14 @@ public class Order implements Orderable {
             sumPrice += anItemsToOrder.getPrice();
         }
         return sumPrice;
+    }
+
+    private int containsLineItem(int id){
+        for (int i=0; i<itemsToOrder.size();i++){
+            if (itemsToOrder.get(i).getId() == id)
+                return i;
+        }
+        return -1;
     }
 
     public ArrayList<LineItem> getItemsToOrder(){
