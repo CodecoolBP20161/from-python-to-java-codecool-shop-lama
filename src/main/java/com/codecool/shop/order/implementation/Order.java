@@ -1,8 +1,10 @@
-package com.codecool.shop.order;
+package com.codecool.shop.order.implementation;
 
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.LineItem;
+import com.codecool.shop.order.Orderable;
 
 import java.util.ArrayList;
 import java.util.UUID;

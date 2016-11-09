@@ -1,4 +1,4 @@
-package com.codecool.shop.order;
+package com.codecool.shop.model;
 
 import com.codecool.shop.model.Product;
 

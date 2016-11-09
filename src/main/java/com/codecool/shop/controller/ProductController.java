@@ -7,7 +7,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.order.Order;
+import com.codecool.shop.order.implementation.Order;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -29,6 +29,7 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("category", new ProductCategory("All Category", "All Category", "All Category"));
         params.put("supplier", new ProductCategory("All Supplier", "All Supplier", "All Supplier"));
+        if (userOrder != null) params.put("cart", userOrder.sumProductsQuantity());
 
         if (req.queryParams("supId") != null) {
             int supId = Integer.parseInt(req.queryParams("supId"));
