@@ -26,13 +26,14 @@ public class ProductController {
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         Order userOrder = req.session().attribute("userOrder");
+
         Map params = new HashMap<>();
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
         params.put("categories", productCategoryDataStore.getAll());
         params.put("category", new ProductCategory("All Category", "All Category", "All Category"));
         params.put("supplier", new ProductCategory("All Supplier", "All Supplier", "All Supplier"));
-        params.put("cart", userOrder.sumProductsQuantity());
+        if (userOrder != null) params.put("cart", userOrder.sumProductsQuantity());
 
         if (req.queryParams("supId") != null) {
             int supId = Integer.parseInt(req.queryParams("supId"));

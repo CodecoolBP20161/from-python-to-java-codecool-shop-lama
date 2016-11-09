@@ -25,16 +25,16 @@ public class Main {
         populateData();
 
         get("/", (request, response) -> {
-            // available session check
-            if (request.session().isNew()) {
-                request.session().attribute("userOrder", new Order());
-            }
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
         });
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
-            ((Order) request.session().attribute("userOrder")).addLineItem(request.queryParams("id"));
+            // available session check
+            if (request.session().attribute("userOrder") == null) {
+                request.session().attribute("userOrder", new Order());
+            }
+            ((Order) request.session().attribute("userOrder")).addLineItem(Integer.parseInt(request.queryParams("id")));
             response.redirect("/");
             return null;
         });
