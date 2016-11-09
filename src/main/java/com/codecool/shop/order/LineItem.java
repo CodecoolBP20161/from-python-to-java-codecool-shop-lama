@@ -6,29 +6,34 @@ import com.codecool.shop.model.Product;
  * Created by annakertesz on 11/8/16.
  */
 public class LineItem {
+    private int id;
     private String name;
     private Product product;
     private int quantity;
-    private float price_db;
     private float price;
 
     public LineItem(){}
 
     public LineItem(Product product) {
+        this.id = product.getId();
         this.product = product;
         this.name = product.getName();
         this.quantity = 1;
-        this.price_db = product.getPriceFloat();
-        this.price = this.product.getPriceFloat() * quantity;
+        this.price = product.getPriceFloat();
 
+    }
+
+    public int getId(){
+        return id;
     }
 
     public float getPrice(){
-        return price;
+        //sum
+        return price*quantity;
     }
 
     public float getPrice_db(){
-        return price_db;
+        return price;
     }
 
     public String getName(){
@@ -37,6 +42,10 @@ public class LineItem {
 
     public int getQuantity(){
         return quantity;
+    }
+
+    public void increaseQuantity(){
+        quantity++;
     }
 
     public void setQuantity(int difference) {

@@ -25,19 +25,18 @@ public class Main {
         populateData();
 
         get("/", (request, response) -> {
+            // available session check
             if (request.session().isNew()) {
-                Order userOrder = new Order();
-                request.session().attribute("userOrder", userOrder);
+                request.session().attribute("userOrder", new Order());
             }
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
         });
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
-
-        get("/add/:id", (req, res) -> {
-            // TODO: Need a session
-            ((Order) req.session().attribute("userOrder")).addLineItem(req.params("id"));
-            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
+        post("/add", (request, response) -> {
+            ((Order) request.session().attribute("userOrder")).addLineItem(request.queryParams("id"));
+            response.redirect("/");
+            return null;
         });
 
         post("/remove", (req, res) -> {

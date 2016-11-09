@@ -41,7 +41,7 @@
         <strong class="pull-right" th:text="${supplier.name}">Supplier Title</strong>
     </div>
     <div class="chart">
-        <p th:text="${cart}">Number of products in cart</p>
+        <a th:href="@{~/cart}" th:text="${cart}">Number of products in cart</a>
     </div>
 
     <ul class="nav nav-pills">
@@ -81,8 +81,11 @@
                                 <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                             </div>
                             <div class="col-xs-12 col-md-6">
-
-                                <a class="btn btn-success" th:href="@{'~/add/' + ${prod.getId()}}">Add to cart</a>
+                                <form action="/add" method="post">
+                                    <input type="hidden" name="id" th:value = "${prod.getId()}"/>
+                                    <!--<input type="hidden" name="prevURL" th:value = "${#httpServletRequest.requestURI}"/>-->
+                                    <input class="btn btn-success" type="submit" value="Add to cart"/>
+                                </form>
                             </div>
                         </div>
                     </div>
