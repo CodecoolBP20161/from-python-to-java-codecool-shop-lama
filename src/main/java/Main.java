@@ -24,9 +24,7 @@ public class Main {
 
         populateData();
 
-        get("/", (request, response) -> {
-            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
-        });
+        get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
@@ -34,9 +32,9 @@ public class Main {
             if (request.session().attribute("userOrder") == null) {
                 request.session().attribute("userOrder", new Order());
             }
-            ((Order) request.session().attribute("userOrder")).addLineItem(Integer.parseInt(request.queryParams("id")));
-            response.redirect("/");
-            return null;
+            Order userOrder = request.session().attribute("userOrder");
+            userOrder.addLineItem(Integer.parseInt(request.queryParams("id")));
+            return userOrder.sumProductsQuantity();
         });
 
         post("/remove", (req, res) -> {

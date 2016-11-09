@@ -42,7 +42,7 @@
     </div>
 
     <div class="cart">
-        <a th:href="@{~/cart}" th:text="${cart}">Number of products in cart</a>
+        <a id="number_on_cart" th:href="@{~/cart}"></a>
     </div>
 
 
@@ -83,11 +83,9 @@
                                 <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                             </div>
                             <div class="col-xs-12 col-md-6">
-                                <form action="/add" method="post">
-                                    <input type="hidden" name="id" th:value = "${prod.getId()}"/>
+                                    <!--<input type="hidden" name="id" th:value = "${prod.getId()}"/>-->
                                     <!--<input type="hidden" name="prevURL" th:value = "${#httpServletRequest.requestURI}"/>-->
-                                    <input class="btn btn-success" type="submit" value="Add to cart"/>
-                                </form>
+                                    <input th:attr="data-id=${prod.getId()}" class="btn btn-success btn_add_to_cart" type="submit" value="Add to cart"/>
                             </div>
                         </div>
                     </div>
@@ -96,6 +94,6 @@
         </div>
 </div>
 
-
+<script type="text/javascript" src="/JS/script.js" ></script>
 </body>
 </html>
