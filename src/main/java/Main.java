@@ -26,6 +26,8 @@ public class Main {
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/filter/category", ProductController::renderFilteredProductsByCategory, new ThymeleafTemplateEngine());
         get("/filter/supplier", ProductController::renderFilteredProductsBySupplier, new ThymeleafTemplateEngine());
+        get("/add/:id", ProductController::renderProducts, new ThymeleafTemplateEngine());
+        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
 //        get("/hello", (req, res) -> {
 //            req.session().attribute("user", "foo");
 //            return "ok";
