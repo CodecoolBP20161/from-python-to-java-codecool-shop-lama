@@ -59,6 +59,12 @@
                         </form>
                     </td>
                     <td>
+                        <form th:method="post" action="/add_item">
+                            <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
+                            <input type="submit" value="+"/>
+                        </form>
+                    </td>
+                    <td>
                         <form th:method="post" action="/remove_all">
                             <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
                             <input type="submit" value="- all"/>
@@ -71,6 +77,8 @@
     </div>
     <h2>Total Price:</h2>
     <h2 th:text="*{order.sumProductsPrice()}">Total Price</h2>
+    <a href="/">Continue shopping </a>
+    <a href="#">I'm ready</a>
 
 </div>
 

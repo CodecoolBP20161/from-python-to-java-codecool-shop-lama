@@ -40,7 +40,13 @@ public class Main {
         });
 
         post("/remove", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"));
+            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), -1);
+            res.redirect("/cart");
+            return null;
+        });
+
+        post("/add_item", (req, res) -> {
+            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), 1);
             res.redirect("/cart");
             return null;
         });
