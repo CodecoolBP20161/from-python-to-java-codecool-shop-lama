@@ -53,14 +53,14 @@
                     <td th:text="*{li.getPrice_db()}">asd</td>
                     <td th:text="*{li.getPrice()}">asd</td>
                     <td>
-                        <form th:method="post" action="/remove">
+                        <form th:method="post" action="/remove_all">
                             <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
                             <input type="submit" value="-"/>
                         </form>
                     </td>
                     <td>
                         <form th:method="post" action="/remove">
-                            <input type="hidden" name="id" value = "0"/>
+                            <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
                             <input type="submit" value="- all"/>
                         </form>
                     </td>
