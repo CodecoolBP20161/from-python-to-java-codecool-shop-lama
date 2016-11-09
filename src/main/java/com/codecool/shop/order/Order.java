@@ -12,16 +12,20 @@ import java.util.UUID;
  */
 public class Order implements Orderable {
 
-    String id;
-    static final ArrayList<LineItem> itemsToOrder = new ArrayList<>();
-    String status;
+    private String id;
+    private ArrayList<LineItem> itemsToOrder;
+    private String status;
 
-    public Order() {
+    {
+        itemsToOrder = new ArrayList<>();
         this.id = UUID.randomUUID().toString();
         this.status = "new";
     }
 
-    public static void addLineItem(String id){
+    public Order() {
+    }
+
+    public void addLineItem(String id){
         int idToFind = Integer.parseInt(id);
         ProductDao productDataStore = ProductDaoMem.getInstance();
         for (Product product : productDataStore.getAll()){
@@ -32,8 +36,20 @@ public class Order implements Orderable {
         System.out.println(itemsToOrder);
     }
 
-    public static int sumProductsQuantity(){
+    public int sumProductsQuantity(){
         return itemsToOrder.size();
+    }
+
+    public float sumProductsPrice(){
+        float sumPrice = 0;
+        for (LineItem anItemsToOrder : itemsToOrder) {
+            sumPrice += anItemsToOrder.getPrice();
+        }
+        return sumPrice;
+    }
+
+    public ArrayList<LineItem> getItemsToOrder(){
+        return itemsToOrder;
     }
 
     @Override

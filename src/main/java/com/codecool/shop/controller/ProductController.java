@@ -9,6 +9,7 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.order.Order;
+import com.codecool.shop.model.Product;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -24,13 +25,15 @@ public class ProductController {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        Order userOrder = req.session().attribute("userOrder");
         Map params = new HashMap<>();
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
         params.put("categories", productCategoryDataStore.getAll());
         params.put("category", new ProductCategory("All Category", "All Category", "All Category"));
         params.put("supplier", new ProductCategory("All Supplier", "All Supplier", "All Supplier"));
-        params.put("chart", Order.sumProductsQuantity());
+        System.out.println(userOrder);
+        params.put("cart", userOrder.sumProductsQuantity());
 
         if (req.queryParams("supId") != null) {
             int supId = Integer.parseInt(req.queryParams("supId"));
@@ -43,6 +46,18 @@ public class ProductController {
         }
 
         return new ModelAndView(params, "product/index");
+    }
+
+    public static ModelAndView renderCart(Request req, Response res) {
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        Map params = new HashMap<>();
+        Order lineItems = new Order();
+        List<Product> products = productDataStore.getAll();
+        for (int i=0; i<products.size(); i++){
+            lineItems.addLineItem(Integer.toString(products.get(i).getId()));
+        }
+        params.put("order", lineItems);
+        return new ModelAndView(params, "product/shoppingCart");
     }
 }
 

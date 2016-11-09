@@ -24,15 +24,20 @@ public class Main {
 
         populateData();
 
-        get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
+        get("/", (request, response) -> {
+            if (request.session().isNew()) {
+                Order userOrder = new Order();
+                request.session().attribute("userOrder", userOrder);
+            }
+            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
+        });
+        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
         get("/add/:id", (req, res) -> {
             // TODO: Need a session
-            Order.addLineItem(req.params("id"));
+            ((Order) req.session().attribute("userOrder")).addLineItem(req.params("id"));
             return new ThymeleafTemplateEngine().render(ProductController.renderProducts(req, res));
-
         });
     }
 
