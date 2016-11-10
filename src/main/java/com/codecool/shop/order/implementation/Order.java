@@ -5,10 +5,14 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.order.Orderable;
+import jdk.nashorn.internal.ir.RuntimeNode;
+import spark.Request;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -27,6 +31,10 @@ public class Order implements Orderable {
     }
 
     public Order() {
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public ArrayList<LineItem> getItemsToOrder(){
@@ -91,7 +99,7 @@ public class Order implements Orderable {
 
     @Override
     public void checkout() {
-
+        if (Objects.equals(status, "new")) status = "checked";
     }
 
     @Override
