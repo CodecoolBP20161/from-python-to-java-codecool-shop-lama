@@ -86,3 +86,12 @@
 .navbar {
     z-index: 9;
 }
+
+.change {
+    height: 15px;
+    width: 15px;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-size: 13px;
+}
