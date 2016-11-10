@@ -3,12 +3,10 @@ package com.codecool.shop.controller;
 import com.codecool.shop.customer.Customer;
 import com.codecool.shop.order.CheckoutProcess;
 import com.codecool.shop.order.implementation.Order;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,18 +26,17 @@ public class OrderController {
         CheckoutProcess checkoutProcess = new CheckoutProcess();
         Order order = req.session().attribute("userOrder");
         if (order == null) return false;
-        addNewCustomerToOrder(req);
+        order.setCustomer(makeNewCustomer(req));
         checkoutProcess.action(order);
         return true;
     }
 
-    private static void addNewCustomerToOrder(Request req) {
-        Customer customer = new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
+    private static Customer makeNewCustomer(Request req) {
+        return new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
                 req.queryParams("billingCountry"), req.queryParams("billingCity"),
                 Integer.parseInt(req.queryParams("billingZipcode")), req.queryParams("billingAddress"),
                 req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
                 Integer.parseInt(req.queryParams("shippingZipcode")), req.queryParams("shippingAddress"));
-        ((Order) req.session().attribute("userOrder")).setCustomer(customer);
     }
 
     // rendering cart.html template
