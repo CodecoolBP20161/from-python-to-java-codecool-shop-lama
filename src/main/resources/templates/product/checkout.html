@@ -28,7 +28,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="col-md-10">
+        <div class="col-md-10 bordering">
 
             <form class="form-horizontal" method="post" action="/checkout/submit">
                 <div class="bordering">
@@ -37,37 +37,37 @@
                         <input required="true" type="text" placeholder="Name" class="form-control" id="usr"/>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Email (example@gmail.com)" class="form-control" id="mail"/>
+                        <input required="true" type="email" placeholder="Email (example@gmail.com)" class="form-control" id="mail"/>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Phone number" class="form-control" id="phone"/>
+                        <input type="tel" required="true" placeholder="Phone number" class="form-control" id="phone"/>
                     </div>
                 </div>
                 <div class="bordering">
                     <h3>Billing address</h3>
                     <div class="form-group">
-                        <input type="text" placeholder="Address" class="form-control" id="address"/>
+                        <input type="text" required="true" placeholder="Address" class="form-control" id="address"/>
                     </div>
                     <div class="form-inline">
                         <div class="form-group col-md-5">
-                                <input type="text" placeholder="City" class="form-control" id="city"/>
+                                <input required="true" type="text" placeholder="City" class="form-control" id="city"/>
                         </div>
                         <div class="form-group col-md-5">
-                                <input type="text" placeholder="Zip-code" class="form-control" id="zip"/>
+                                <input required="true" type="text" placeholder="Zip-code" class="form-control" id="zip"/>
                         </div>
                     </div>
                 </div>
                 <div class="bordering">
                     <h3>Shipping address</h3>
                     <div class="form-group">
-                        <input type="text" placeholder="Address" class="form-control" id="address"/>
+                        <input type="text" required="true" placeholder="Address" class="form-control" id="address"/>
                     </div>
                     <div class="form-inline">
                         <div class="form-group col-md-5">
-                            <input type="text" placeholder="City" class="form-control" id="city"/>
+                            <input type="text" required="true" placeholder="City" class="form-control" id="city"/>
                         </div>
                         <div class="form-group col-md-5">
-                            <input type="text" placeholder="Zip-code" class="form-control" id="zip"/>
+                            <input type="text" required="true" placeholder="Zip-code" class="form-control" id="zip"/>
                         </div>
                     </div>
                 </div>

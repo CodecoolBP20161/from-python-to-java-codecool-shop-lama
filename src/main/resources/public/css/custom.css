@@ -104,3 +104,12 @@
     border-radius: 20px;
     padding-bottom: 50px;
 }
+
+.navigate {
+    margin: 20px;
+    display: inline-block;
+}
+
+.link {
+    margin: 50px;
+}
