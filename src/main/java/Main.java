@@ -88,9 +88,9 @@ public class Main {
         ProductCategory phone = new ProductCategory("Phone", "Hardware", "phone");
         productCategoryDataStore.add(phone);
         ProductCategory laptop = new ProductCategory("Laptop", "Hardware", "laptop");
-        productCategoryDataStore.add(phone);
+        productCategoryDataStore.add(laptop);
         ProductCategory headset = new ProductCategory("Headset", "Hardware", "headset");
-        productCategoryDataStore.add(phone);
+        productCategoryDataStore.add(headset);
 
 
         //setting up products and printing it
