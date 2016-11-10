@@ -28,10 +28,11 @@
 </head>
 
 <body>
-
-<div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
-</div>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">Codecool Shop</a>
+    </div>
+</nav>
 
 <div class="container">
     <h2>Table</h2>
@@ -49,16 +50,40 @@
             <th:block th:each="li,iterStat : ${order.getItemsToOrder()}">
                 <tr>
                     <td th:text="*{li.getName()}">asd</td>
+                    <td >
+                        <div class="row-fluid">
+                        <div th:text="*{li.getQuantity()}" class="col-xs-1">quantity</div>
+                        <div class="btn-group-vertical col-xs-1">
+                            <form th:method="post" action="/add_item">
+                                <input  type="hidden" name="id" th:value = "*{li.product.getId()}"/>
+                                <input class="btn change" type="submit" value="+"/>
+                            </form>
+                            <form th:method="post" action="/remove">
+                                <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
+                                <input class="btn change" type="submit" value="-"/>
+                            </form>
+                        </div>
+
+                        </div>
+                    </td>
                     <td th:text="*{li.getQuantity()}">asd</td>
-                    <td th:text="*{li.getPrice_db()}">asd</td>
-                    <td th:text="*{li.getPrice()}">asd</td>
+                    <td th:text="*{li.getPrice_db()+' USD'}">asd</td>
+                    <td th:text="*{li.getPrice()+' USD'}">asd</td>
+                    <td>
+                        <form th:method="post" action="/remove_all">
+                            <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
+                            <input class="btn" type="submit" value="remove"/>
+                        </form>
+                    </td>
                 </tr>
             </th:block>
             </tbody>
         </table>
     </div>
     <h2>Total Price:</h2>
-    <h2 th:text="*{order.sumProductsPrice()}">Total Price</h2>
+    <h2 th:text="*{order.sumProductsPrice()+' USD'}">Total Price</h2>
+    <a href="/">Continue shopping </a>
+    <a href="#">I'm ready</a>
 
 </div>
 
