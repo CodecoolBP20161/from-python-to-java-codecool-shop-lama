@@ -1,6 +1,6 @@
-package com.codecool.shop.customer;
+package com.codecool.shop.util;
 
-public class Checker {
+public class InputValidator {
 
     public static boolean isAlpha(String str) {
         for (String partStr : str.split(" ")) {
