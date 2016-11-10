@@ -1,4 +1,6 @@
 package com.codecool.shop.model;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import com.codecool.shop.model.Product;
 
@@ -7,37 +9,34 @@ import com.codecool.shop.model.Product;
  */
 public class LineItem {
     private int id;
-    private String name;
     private Product product;
     private int quantity;
-    private float price;
 
     public LineItem(){}
 
     public LineItem(Product product) {
         this.id = product.getId();
         this.product = product;
-        this.name = product.getName();
         this.quantity = 1;
-        this.price = product.getPriceFloat();
-
     }
 
     public int getId(){
         return id;
     }
 
-    public float getPrice(){
+    public String getPrice(){
         //sum
-        return price*quantity;
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(product.getPriceFloat()*quantity);
     }
 
-    public float getPrice_db(){
-        return price;
+    public String getPrice_db(){
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(product.getPriceFloat());
     }
 
     public String getName(){
-        return name;
+        return product.getName();
     }
 
     public int getQuantity(){

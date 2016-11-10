@@ -66,8 +66,9 @@
 
                         </div>
                     </td>
-                    <td th:text="*{li.getPrice_db()}">asd</td>
-                    <td th:text="*{li.getPrice()}">asd</td>
+                    <td th:text="*{li.getQuantity()}">asd</td>
+                    <td th:text="*{li.getPrice_db()+' USD'}">asd</td>
+                    <td th:text="*{li.getPrice()+' USD'}">asd</td>
                     <td>
                         <form th:method="post" action="/remove_all">
                             <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
@@ -80,10 +81,9 @@
         </table>
     </div>
     <h2>Total Price:</h2>
-    <h2 th:text="*{order.sumProductsPrice()}">Total Price</h2>
-    <div class="btn-group">
-        <a href="/" class="btn btn-primary">Continue shopping </a>
-    </div>
+    <h2 th:text="*{order.sumProductsPrice()+' USD'}">Total Price</h2>
+    <a href="/">Continue shopping </a>
+    <a href="#">I'm ready</a>
 
 </div>
 

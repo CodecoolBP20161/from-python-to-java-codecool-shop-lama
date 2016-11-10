@@ -5,6 +5,8 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.order.Orderable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -78,12 +80,13 @@ public class Order implements Orderable {
         return sumQuantity;
     }
 
-    public float sumProductsPrice(){
+    public String sumProductsPrice(){
         float sumPrice = 0;
         for (LineItem anItemsToOrder : itemsToOrder) {
-            sumPrice += anItemsToOrder.getPrice();
+            sumPrice += Float.parseFloat(anItemsToOrder.getPrice());
         }
-        return sumPrice;
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(sumPrice);
     }
 
     @Override
