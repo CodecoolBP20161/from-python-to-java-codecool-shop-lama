@@ -25,7 +25,12 @@ public class Main {
         populateData();
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
+        get("/cart", (request, response) -> {
+            if (request.session().attribute("userOrder") == null) {
+                request.session().attribute("userOrder", new Order());
+            }
+            return new ThymeleafTemplateEngine().render(ProductController.renderCart(request, response));
+        });
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
             // available session check

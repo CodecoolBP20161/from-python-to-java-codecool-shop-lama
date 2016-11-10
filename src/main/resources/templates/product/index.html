@@ -41,9 +41,11 @@
         <strong class="pull-right" th:text="${supplier.name}">Supplier Title</strong>
     </div>
 
-    <div class="cart">
-        <a id="number_on_cart" th:text="${cart}" th:href="@{~/cart}"></a>
-    </div>
+    <a th:href="@{~/cart}">
+        <div class="cart">
+            <p id="number_on_cart" th:text="${cart}"></p>
+        </div>
+    </a>
 
 
     <ul class="nav nav-pills">
