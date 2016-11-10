@@ -1,3 +1,4 @@
+import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
@@ -26,22 +27,15 @@ public class Main {
 
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
         get("/cart", (request, response) -> {
-            if (request.session().attribute("userOrder") == null) {
-                request.session().attribute("userOrder", new Order());
-            }
-            return new ThymeleafTemplateEngine().render(ProductController.renderCart(request, response));
+            return new ThymeleafTemplateEngine().render(OrderController.renderCart(request, response));
         });
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
-            // available session check
-            if (request.session().attribute("userOrder") == null) {
-                request.session().attribute("userOrder", new Order());
-            }
-            Order userOrder = request.session().attribute("userOrder");
-            userOrder.addLineItem(Integer.parseInt(request.queryParams("id")));
-            return userOrder.sumProductsQuantity();
+            OrderController.addProductToCart(request);
+            return ((Order) request.session().attribute("userOrder")).sumProductsQuantity();
         });
 
+        // modify quantities
         post("/remove", (req, res) -> {
             ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), -1);
             res.redirect("/cart");
@@ -60,9 +54,20 @@ public class Main {
             return null;
         });
 
+        // checkout methods
+        get("/checkout", OrderController::renderCheckout, new ThymeleafTemplateEngine());
+
+        post("/checkout/submit", (req, res) -> {
+            //TODO: WRITE HERE
+            res.redirect("/payment");
+            return null;
+        });
+
+        get("/payment", (req, res) -> "payment");
+
     }
 
-    public static void populateData() {
+    private static void populateData() {
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
