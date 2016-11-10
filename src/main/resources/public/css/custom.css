@@ -81,3 +81,12 @@
     color: white;
     font-size: 30px;
 }
+
+.change {
+    height: 15px;
+    width: 15px;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-size: 13px;
+}
