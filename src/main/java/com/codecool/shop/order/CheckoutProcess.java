@@ -8,7 +8,7 @@ import jdk.nashorn.internal.ir.RuntimeNode;
  */
 public class CheckoutProcess extends AbstractProcess {
     @Override
-    protected void action(Orderable order) {
+    public void action(Orderable order) {
         order.checkout();
     }
 }

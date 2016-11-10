@@ -108,4 +108,12 @@ public class Order implements Orderable {
     public void pay() {
 
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }

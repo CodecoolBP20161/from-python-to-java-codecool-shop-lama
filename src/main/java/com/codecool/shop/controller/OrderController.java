@@ -1,7 +1,9 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.customer.Customer;
+import com.codecool.shop.order.CheckoutProcess;
 import com.codecool.shop.order.implementation.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -22,13 +24,20 @@ public class OrderController {
         userOrder.addLineItem(Integer.parseInt(req.queryParams("id")));
     }
 
-    public static boolean addNewCustomerToOrder(Request req) {
-        if (req.session().attribute("userOrder") == null) return false;
+    public static boolean checkOut(Request req) {
+        CheckoutProcess checkoutProcess = new CheckoutProcess();
+        Order order = req.session().attribute("userOrder");
+        if (order == null) return false;
+        addNewCustomerToOrder(req);
+        checkoutProcess.action(order);
+        return true;
+    }
+
+    private static void addNewCustomerToOrder(Request req) {
         Customer customer = new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
                 req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
                 Integer.parseInt(req.queryParams("shippingZipcode")), req.queryParams("shippingAddress"));
         ((Order) req.session().attribute("userOrder")).setCustomer(customer);
-        return true;
     }
 
     // rendering cart.html template
