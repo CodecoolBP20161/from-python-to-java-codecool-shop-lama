@@ -8,7 +8,7 @@ import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import com.codecool.shop.order.Order;
+import com.codecool.shop.order.implementation.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import static spark.Spark.*;
@@ -24,19 +24,22 @@ public class Main {
 
         populateData();
 
-        get("/", (request, response) -> {
-            // available session check
-            if (request.session().isNew()) {
+        get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
+        get("/cart", (request, response) -> {
+            if (request.session().attribute("userOrder") == null) {
                 request.session().attribute("userOrder", new Order());
             }
-            return new ThymeleafTemplateEngine().render(ProductController.renderProducts(request, response));
+            return new ThymeleafTemplateEngine().render(ProductController.renderCart(request, response));
         });
-        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
         post("/add", (request, response) -> {
-            ((Order) request.session().attribute("userOrder")).addLineItem(request.queryParams("id"));
-            response.redirect("/");
-            return null;
+            // available session check
+            if (request.session().attribute("userOrder") == null) {
+                request.session().attribute("userOrder", new Order());
+            }
+            Order userOrder = request.session().attribute("userOrder");
+            userOrder.addLineItem(Integer.parseInt(request.queryParams("id")));
+            return userOrder.sumProductsQuantity();
         });
 
         post("/remove", (req, res) -> {
