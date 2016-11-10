@@ -95,6 +95,11 @@
     font-size: 13px;
 }
 
+#products {
+    position: absolute;
+    top: 80px;
+}
+
 .bordering {
     padding-top: 15px;
     padding-left: 20px;
