@@ -68,8 +68,9 @@
 .cart {
 
     background: url("../img/cart.png");
-    position: absolute;
-    top: 10px;
+    position: fixed;
+    z-index:10;
+    top: 50px;
     right: 10px;
     width: 100px;
     height: 100px;
@@ -80,4 +81,8 @@
 #number_on_cart {
     color: white;
     font-size: 30px;
+}
+
+.navbar {
+    z-index: 9;
 }
