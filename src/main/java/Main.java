@@ -59,7 +59,8 @@ public class Main {
 
         post("/checkout/submit", (req, res) -> {
             //TODO: WRITE HERE
-            res.redirect("/payment");
+            if (OrderController.addNewCustomerToOrder(req)) res.redirect("/payment");
+            else res.redirect("/checkout");
             return null;
         });
 

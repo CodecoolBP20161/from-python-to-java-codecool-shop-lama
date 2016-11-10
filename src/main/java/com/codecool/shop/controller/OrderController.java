@@ -1,10 +1,12 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,15 @@ public class OrderController {
         makeSessionOrderIfNecessary(req);
         Order userOrder = req.session().attribute("userOrder");
         userOrder.addLineItem(Integer.parseInt(req.queryParams("id")));
+    }
+
+    public static boolean addNewCustomerToOrder(Request req) {
+        if (req.session().attribute("userOrder") == null) return false;
+        Customer customer = new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
+                req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
+                Integer.parseInt(req.queryParams("shippingZipcode")), req.queryParams("shippingAddress"));
+        ((Order) req.session().attribute("userOrder")).setCustomer(customer);
+        return true;
     }
 
     // rendering cart.html template

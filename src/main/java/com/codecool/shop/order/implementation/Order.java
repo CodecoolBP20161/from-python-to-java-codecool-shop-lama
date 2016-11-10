@@ -1,5 +1,6 @@
 package com.codecool.shop.order.implementation;
 
+import com.codecool.shop.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
@@ -23,6 +24,7 @@ public class Order implements Orderable {
     private String id;
     private ArrayList<LineItem> itemsToOrder;
     private String status;
+    private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
@@ -33,8 +35,8 @@ public class Order implements Orderable {
     public Order() {
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public ArrayList<LineItem> getItemsToOrder(){
