@@ -35,6 +35,8 @@ public class OrderController {
 
     private static void addNewCustomerToOrder(Request req) {
         Customer customer = new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
+                req.queryParams("billingCountry"), req.queryParams("billingCity"),
+                Integer.parseInt(req.queryParams("billingZipcode")), req.queryParams("billingAddress"),
                 req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
                 Integer.parseInt(req.queryParams("shippingZipcode")), req.queryParams("shippingAddress"));
         ((Order) req.session().attribute("userOrder")).setCustomer(customer);

@@ -8,13 +8,13 @@ public class Customer {
     private Address shippingAddress;
 
     public Customer(String name, String email, String phoneNumber,
-                    String bCountry, String bCity, int bZipcode, String bAddress,
-                    String sCountry, String sCity, int sZipcode, String sAddress){
+                    String billingCountry, String billinCity, int billingZipcode, String billingAddress,
+                    String shippingCountry, String shippingCity, int shippingZipcode, String shippingAddress){
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.billingAddress = new Address(bCountry, bCity, bZipcode, bAddress);
-        this.shippingAddress = new Address(sCountry, sCity, sZipcode, sAddress);
+        this.billingAddress = new Address(billingCountry, billinCity, billingZipcode, billingAddress);
+        this.shippingAddress = new Address(shippingCountry, shippingCity, shippingZipcode, shippingAddress);
     }
 
 }
