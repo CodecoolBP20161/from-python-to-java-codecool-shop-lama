@@ -60,6 +60,16 @@ public class Main {
             return null;
         });
 
+        get("/checkout", ProductController::renderCheckout, new ThymeleafTemplateEngine());
+
+        post("/checkout/submit", (req, res) -> {
+            //TODO: WRITE HERE
+            res.redirect("/payment");
+            return null;
+        });
+
+        get("/payment", (req, res) -> "payment");
+
     }
 
     public static void populateData() {

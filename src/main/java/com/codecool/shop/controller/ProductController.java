@@ -49,5 +49,15 @@ public class ProductController {
         params.put("order", req.session().attribute("userOrder"));
         return new ModelAndView(params, "product/shoppingCart");
     }
+
+    public static ModelAndView renderCheckout(Request req, Response res) {
+        Map params = new HashMap<>();
+        return new ModelAndView(params, "product/checkout");
+    }
+
+    public static ModelAndView renderPayment(Request req, Response res) {
+        Map params = new HashMap<>();
+        return new ModelAndView(params, "product/payment");
+    }
 }
 
