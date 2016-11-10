@@ -94,3 +94,8 @@
     padding: 0px;
     font-size: 13px;
 }
+
+#products {
+    position: absolute;
+    top:80px;
+}
