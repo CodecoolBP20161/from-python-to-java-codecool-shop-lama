@@ -30,50 +30,48 @@
 <body>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Codecool Shop</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Show all</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" th:inline="text">
-                        [[${category.name}]] <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">Show all</a></li>
-                        <li><a th:href="@{'~/filter'(catId=${cat.getId()})}" th:each="cat,iterStat : ${categories}"
-                               th:text="${cat.name}"></a></li>
-                    </ul>
-                </li>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Codecool Shop</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Show all</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    Product Categories <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/">Show all</a></li>
+                    <li><a th:href="@{'~/filter'(catId=${cat.getId()})}" th:each="cat,iterStat : ${categories}"
+                           th:text="${cat.name}"></a></li>
+                </ul>
+            </li>
 
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"  th:inline="text">
-                        [[${supplier.name}]] <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">Show all</a></li>
-                        <li><a th:href="@{'~/filter'(supId=${sup.getId()})}" th:each="sup,iterStat : ${suppliers}"
-                               th:text="${sup.name}"></a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    Suppliers <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/">Show all</a></li>
+                    <li><a th:href="@{'~/filter'(supId=${sup.getId()})}" th:each="sup,iterStat : ${suppliers}"
+                           th:text="${sup.name}"></a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>
 
 
-<div class="container" id="after_navbar">
-    <!--<div class="well well-sm">-->
-        <!--<strong th:text="${category.name}">Category Title</strong>-->
-        <!--<strong class="pull-right" th:text="${supplier.name}">Supplier Title</strong>-->
-    <!--</div>-->
+<div class="container">
+    <div class="well well-sm">
+        <strong th:text="${category.name}">Category Title</strong>
+        <strong class="pull-right" th:text="${supplier.name}">Supplier Title</strong>
+    </div>
 
     <a th:href="@{~/cart}">
         <div class="cart">
@@ -82,8 +80,8 @@
     </a>
 </div>
 
-<div class="container" id="products">
-    <div class="row list-group">
+<div class="container">
+    <div id="products" class="row list-group">
         <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products}">
             <div class="thumbnail">
                 <img class="group list-group-image" src="http://placehold.it/400x250/000/fff"
