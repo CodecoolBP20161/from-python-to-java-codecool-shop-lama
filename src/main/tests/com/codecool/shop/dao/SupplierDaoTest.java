@@ -10,10 +10,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by cave on 2016.11.21..
@@ -21,8 +18,9 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class SupplierDaoTest {
 
-    public SupplierDao implementation;
+    private SupplierDao implementation;
     private Supplier supplier;
+    private Supplier supplier2;
 
     public SupplierDaoTest(SupplierDao implementation) {
         this.implementation = implementation;
@@ -37,7 +35,19 @@ public class SupplierDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        supplier = spy(new Supplier("test", "test"));
+        supplier = new Supplier("test", "test");
+        supplier2 = new Supplier("test2", "test2");
+    }
+
+    @Test
+    public void getAll() throws Exception {
+        implementation.add(supplier);
+        implementation.add(supplier2);
+        List<Supplier> expectedSuppliers = new ArrayList<>(Arrays.asList(supplier, supplier2));
+
+        List<Supplier> resultSuppliers = implementation.getAll();
+
+        assertEquals("get all suppliers", expectedSuppliers, resultSuppliers);
     }
 
     @Test
@@ -51,35 +61,26 @@ public class SupplierDaoTest {
     @Test
     public void removeSupplier() throws Exception {
         implementation.add(supplier);
+        implementation.add(supplier2);
 
-        implementation.remove(supplier.getId());
+        implementation.remove(supplier2.getId());
 
-        assertFalse("Try to find supplier", implementation.getAll().contains(supplier));
+        assertFalse("Try to find supplier", implementation.getAll().contains(supplier2));
     }
 
 
-//    @Test
-//    public void find() throws Exception {
-//        implementation.add(mock(Supplier.class));
-//        Supplier firstSupplier = implementation.getAll().get(0);
-//
-//        Supplier foundedSupplier = implementation.find(firstSupplier.getId());
-//
-//        assertEquals(firstSupplier, foundedSupplier);
-//    }
+    @Test
+    public void find() throws Exception {
+        implementation.add(supplier);
+        implementation.add(supplier2);
 
-//    @Test
-//    public void remove() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void getAll() throws Exception {
-//
-//    }
+        Supplier foundedSupplier = implementation.find(supplier2.getId());
 
+        assertEquals("find supplier by ID", supplier2, foundedSupplier);
+    }
 
     @After
     public void tearDown() throws Exception {
+        implementation.getAll().clear();
     }
 }
