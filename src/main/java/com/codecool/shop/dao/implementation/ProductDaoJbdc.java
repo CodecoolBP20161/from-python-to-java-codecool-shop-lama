@@ -6,7 +6,10 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +105,20 @@ public class ProductDaoJbdc implements ProductDao {
         return InstanceList(cSQL);
     }
 
+
+
+    private List<Product> InstanceList(String sql) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        Connection connection = databaseConnection.getConnection();
+        ResultSet result = connection.createStatement().executeQuery(sql);
+        while (result.next()){
+            productList.add(createInstance(result));
+        }
+        return productList;
+    }
+
     private Product createInstance(ResultSet result) throws SQLException {
+
         String name = result.getString("name");
         float defaultPrice = result.getInt("default_price");
         String description = result.getString("description");
@@ -113,18 +129,8 @@ public class ProductDaoJbdc implements ProductDao {
 //        TODO: add product and supplier instances, when they're ready
         String categoryQuery = result.getString("category");
         String supplierQuery = result.getString("supplier");
-
-        return new Product(name, defaultPrice, currencyString, description, category, product);
-
-    }
-
-    private List<Product> InstanceList(String sql) throws SQLException {
-        List<Product> productList = new ArrayList<>();
-        Connection connection = databaseConnection.getConnection();
-        ResultSet result = connection.createStatement().executeQuery(sql);
-        while (result.next()){
-            productList.add(createInstance(result));
-        }
-        return productList;
+        ProductCategory category = null;
+        Supplier supplier = null;
+        return new Product(name, defaultPrice, currencyString, description, category, supplier);
     }
 }
