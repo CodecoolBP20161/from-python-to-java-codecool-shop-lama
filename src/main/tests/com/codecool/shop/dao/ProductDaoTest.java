@@ -65,12 +65,7 @@ public class ProductDaoTest {
         if (connection != null) {
 //            connection.setAutoCommit(false);
 //            when(databaseConnectionMock.getConnection()).thenReturn(connection);
-            Statement statement = connection.createStatement();
-            try {
-                statement.execute("DELETE FROM products;");
-            } catch (PSQLException e){
-                e.printStackTrace();
-            }
+            setupTables();
         }
     }
 
@@ -139,24 +134,23 @@ public class ProductDaoTest {
     public void getByProductCategory() throws Exception {
         implementation.add(product);
         implementation.add(product2);
-        List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product2));
 
         List<Product> foundedProducts = implementation.getBy(productCategory2);
 
-        assertEquals("list length", expectedProducts.size(), foundedProducts.size());
-        assertEquals("first elem match?", expectedProducts.get(0).getName(), foundedProducts.get(0).getName());
+        assertEquals("list length", 1, foundedProducts.size());
+        assertEquals("first elem match?", product2.getName(), foundedProducts.get(0).getName());
     }
 
     @Test
     public void getBySupplier() throws Exception {
         implementation.add(product);
         implementation.add(product2);
-        List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product2));
 
+        
         List<Product> foundedProducts = implementation.getBy(supplier2);
 
-        assertEquals("list length", expectedProducts.size(), foundedProducts.size());
-        assertEquals("first elem match?", expectedProducts.get(0).getName(), foundedProducts.get(0).getName());
+        assertEquals("list length", 1, foundedProducts.size());
+        assertEquals("first elem match?", product2.getName(), foundedProducts.get(0).getName());
     }
 
     @Test
@@ -201,8 +195,44 @@ public class ProductDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
+            setupTables();
 //            connection.rollback();
 //            connection.close();
+        }
+    }
+
+    private void setupTables() {
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("DELETE FROM products;");
+            statement.execute("DELETE FROM product_categories;");
+            statement.execute("DELETE FROM suppliers;");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        insertNecessarySuppliers();
+        insertNecessaryCategories();
+    }
+
+    private void insertNecessarySuppliers() {
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("INSERT INTO suppliers (name, description) VALUES ('test', 'test');");
+            statement.execute("INSERT INTO suppliers (name, description) VALUES ('test2', 'test2');");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insertNecessaryCategories() {
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("INSERT INTO product_categories (name, description, department)" +
+                    "VALUES ('test', 'test', 'test');");
+            statement.execute("INSERT INTO product_categories (name, description, department)" +
+                    "VALUES ('test2', 'test2', 'test2');");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

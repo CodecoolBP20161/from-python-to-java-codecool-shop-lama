@@ -13,19 +13,27 @@ import java.util.ArrayList;
 public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     private static ProductCategoryDaoJdbc instance;
-    private static DatabaseConnection databaseConnection;
+    private static Connection connection;
 
     public static ProductCategoryDaoJdbc getInstance() {
         if (instance == null) {
             instance = new ProductCategoryDaoJdbc();
-            databaseConnection = DatabaseConnection.getInstance();
+            try {
+                connection = DatabaseConnection.getInstance().getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
     }
 
     public static ProductCategoryDaoJdbc getInstance(DatabaseConnection dbConnection) {
         if (instance == null) {
-            databaseConnection = dbConnection;
+            try {
+                connection = dbConnection.getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             instance = new ProductCategoryDaoJdbc();
         }
         return instance;
@@ -37,7 +45,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     @Override
     public void add(ProductCategory category) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO product_categories (name, description, department) VALUES (?, ?, ?);");
             preparedStatement.setString(1, category.getName());
             preparedStatement.setString(2, category.getDescription());
@@ -51,7 +59,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     @Override
     public ProductCategory find(int id) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM product_categories WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,7 +79,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     @Override
     public void remove(int id) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = connection
                     .prepareStatement("DELETE FROM product_categories WHERE id = ?;");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -84,8 +92,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     public List<ProductCategory> getAll() {
         List<ProductCategory> DATA = new ArrayList<>();
         String query = "SELECT * FROM product_categories;";
-        try (Connection connection = databaseConnection.getConnection();
-             Statement statement =connection.createStatement();
+        try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
         ){
             while (resultSet.next()){
@@ -102,8 +109,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     }
 
     private void executeQuery(String query) {
-        try (Connection connection = databaseConnection.getConnection();
-             Statement statement =connection.createStatement()
+        try (Statement statement =connection.createStatement()
         ){
             statement.execute(query);
 
