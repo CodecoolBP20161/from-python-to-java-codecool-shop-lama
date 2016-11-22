@@ -9,9 +9,12 @@ public class DatabaseConnection {
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "123glevi02";
 
-    private static DatabaseConnection dbConnection = new DatabaseConnection();
+    private static DatabaseConnection dbConnection;
 
     public static DatabaseConnection getInstance() {
+        if (dbConnection == null){
+            dbConnection = new DatabaseConnection();
+        }
         return dbConnection;
     }
 
