@@ -3,6 +3,9 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.ProductCategory;
+
+import java.util.List;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

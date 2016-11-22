@@ -16,7 +16,7 @@ public class SupplierDaoJdbc implements SupplierDao{
 
     public static SupplierDaoJdbc getInstance() {
         if (instance == null) {
-            instance = SupplierDaoJdbc.getInstance();
+            instance = new SupplierDaoJdbc();
             databaseConnection = DatabaseConnection.getInstance();
         }
         return instance;
@@ -24,7 +24,7 @@ public class SupplierDaoJdbc implements SupplierDao{
 
     public static SupplierDaoJdbc getInstance(DatabaseConnection dbConnection) {
         if (instance == null) {
-            instance = SupplierDaoJdbc.getInstance();
+            instance = new SupplierDaoJdbc();
             databaseConnection = dbConnection;
         }
         return instance;
@@ -35,7 +35,7 @@ public class SupplierDaoJdbc implements SupplierDao{
 
     @Override
     public void add(Supplier category) {
-        
+
     }
 
     @Override

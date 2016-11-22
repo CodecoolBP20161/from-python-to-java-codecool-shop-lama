@@ -1,6 +1,8 @@
 package com.codecool.shop.dao;
 
+import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.ProductCategory;
 import org.junit.After;
@@ -50,7 +52,8 @@ public class ProductCategoryDaoTest {
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
-                {ProductCategoryDaoMem.getInstance()}
+                {ProductCategoryDaoMem.getInstance()},
+                {ProductCategoryDaoJdbc.getInstance(databaseConnectionMock)}
         });
     }
 

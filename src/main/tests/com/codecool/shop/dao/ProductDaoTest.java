@@ -1,6 +1,8 @@
 package com.codecool.shop.dao;
 
+import com.codecool.shop.dao.implementation.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
+import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -9,13 +11,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.postgresql.util.PSQLException;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by cave on 2016.11.21..
@@ -30,15 +39,26 @@ public class ProductDaoTest {
     private ProductCategory productCategory2 = new ProductCategory("test2", "test2", "test2");
     private Supplier supplier = new Supplier("test", "test");
     private Supplier supplier2 = new Supplier("test2", "test2");
+    private Connection connection;
+    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
     public ProductDaoTest(ProductDao implementation) {
         this.implementation = implementation;
+        try {
+            this.connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/codecoolshop",
+                    "cave",
+                    "123456789");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
-                {ProductDaoMem.getInstance()}
+                {ProductDaoMem.getInstance()},
+                {ProductDaoJdbc.getInstance(databaseConnectionMock)}
         });
     }
 
@@ -46,6 +66,17 @@ public class ProductDaoTest {
     public void setUp() throws Exception {
         product = new Product("test", 1.0f, "HUF", "test", productCategory, supplier);
         product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2);
+
+        if (connection != null) {
+            connection.setAutoCommit(false);
+            when(databaseConnectionMock.getConnection()).thenReturn(connection);
+            Statement statement = connection.createStatement();
+            try {
+                statement.execute("DELETE FROM products;");
+            } catch (PSQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Test
@@ -113,5 +144,9 @@ public class ProductDaoTest {
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
+        if (connection != null) {
+            connection.rollback();
+            connection.close();
+        }
     }
 }
