@@ -36,7 +36,7 @@ public class SupplierDaoTest {
                     "jdbc:postgresql://localhost:5432/codecoolshop",
                     "cave",
                     "123456789");
-        } catch (PSQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -57,7 +57,11 @@ public class SupplierDaoTest {
             connection.setAutoCommit(false);
             when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
-            statement.execute("DELETE FROM suppliers;");
+            try {
+                statement.execute("DELETE FROM suppliers;");
+            } catch (PSQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
