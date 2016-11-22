@@ -76,6 +76,11 @@ public class ProductDaoTest {
     }
 
     @Test
+    public void testDbConnection() throws Exception {
+        assertNotNull("valid database name check", connection);
+    }
+
+    @Test
     public void getAll() throws Exception {
         implementation.add(product);
         implementation.add(product2);
@@ -83,7 +88,16 @@ public class ProductDaoTest {
 
         List<Product> resultProducts = implementation.getAll();
 
-        assertEquals("get all products", expectedProducts, resultProducts);
+        assertEquals(
+                "check first ProductCategory object",
+                expectedProducts.get(0).getName(),
+                resultProducts.get(0).getName()
+        );
+        assertEquals(
+                "check second ProductCategory object",
+                expectedProducts.get(1).getName(),
+                resultProducts.get(1).getName()
+        );
     }
 
     @Test
@@ -91,17 +105,23 @@ public class ProductDaoTest {
 
         implementation.add(product);
 
-        assertTrue("is product in the list", implementation.getAll().contains(product));
+        assertEquals(
+                "is productCategory in the list",
+                product.getName(),
+                implementation.getAll().get(0).getName());
     }
 
     @Test
     public void removeProduct() throws Exception {
         implementation.add(product);
         implementation.add(product2);
+        List<Product> productsExpected = implementation.getAll();
 
-        implementation.remove(product2.getId());
+        implementation.remove(productsExpected.get(1).getId());
+        List<Product> productsResult = implementation.getAll();
 
-        assertFalse("Try to find product", implementation.getAll().contains(product2));
+        assertEquals("row number", 1, productsResult.size(),);
+        assertEquals("was the right one deleted?", "test", productsResult.get(0).getName());
     }
 
 
@@ -109,10 +129,11 @@ public class ProductDaoTest {
     public void find() throws Exception {
         implementation.add(product);
         implementation.add(product2);
+        List<Product> productsExpected = implementation.getAll(); // for setting ID
 
-        Product foundedProduct = implementation.find(product2.getId());
+        Product foundedProduct = implementation.find(productsExpected.get(1).getId());
 
-        assertEquals("find product by ID", product2, foundedProduct);
+        assertEquals("find productCategory by ID", productsExpected.get(1).getId(), foundedProduct.getId());
     }
 
     @Test
@@ -123,7 +144,8 @@ public class ProductDaoTest {
 
         List<Product> foundedProducts = implementation.getBy(productCategory2);
 
-        assertEquals(expectedProducts, foundedProducts);
+        assertEquals("list length", expectedProducts.size(), foundedProducts.size());
+        assertEquals("first elem match?", expectedProducts.get(0).getName(), foundedProducts.get(0).getName());
     }
 
     @Test
@@ -134,7 +156,46 @@ public class ProductDaoTest {
 
         List<Product> foundedProducts = implementation.getBy(supplier2);
 
-        assertEquals(expectedProducts, foundedProducts);
+        assertEquals("list length", expectedProducts.size(), foundedProducts.size());
+        assertEquals("first elem match?", expectedProducts.get(0).getName(), foundedProducts.get(0).getName());
+    }
+
+    @Test
+    public void isProductGetSupplierObject() throws Exception {
+        implementation.add(product);
+        implementation.add(product2);
+
+        List<Product> products = implementation.getAll();
+
+        assertEquals(
+                "check first supplier object",
+                product.getSupplier().getName(),
+                products.get(0).getSupplier().getName()
+        );
+        assertEquals(
+                "check second supplier object",
+                product2.getSupplier().getName(),
+                products.get(1).getSupplier().getName()
+        );
+    }
+
+    @Test
+    public void isProductGetProductCategoryObject() throws Exception {
+        implementation.add(product);
+        implementation.add(product2);
+
+        List<Product> products = implementation.getAll();
+
+        assertEquals(
+                "check first ProductCategory object",
+                product.getProductCategory().getName(),
+                products.get(0).getProductCategory().getName()
+        );
+        assertEquals(
+                "check second ProductCategory object",
+                product2.getProductCategory().getName(),
+                products.get(1).getProductCategory().getName()
+        );
     }
 
     @After

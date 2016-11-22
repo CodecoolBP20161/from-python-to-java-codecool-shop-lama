@@ -101,18 +101,21 @@ public class ProductCategoryDaoTest {
 
         assertEquals(
                 "is productCategory in the list",
-                implementation.getAll().get(0).getName(),
-                productCategory.getName());
+                productCategory.getName(),
+                implementation.getAll().get(0).getName());
     }
 
     @Test
     public void removeProductCategory() throws Exception {
         implementation.add(productCategory);
         implementation.add(productCategory2);
+        List<ProductCategory> productCategoriesExpected = implementation.getAll();
 
-        implementation.remove(productCategory2.getId());
+        implementation.remove(productCategoriesExpected.get(1).getId());
+        List<ProductCategory> productCategoriesResult = implementation.getAll();
 
-        assertFalse("Try to find productCategory", implementation.getAll().contains(productCategory2));
+        assertEquals("row number", 1, productCategoriesResult.size());
+        assertEquals("was the right one deleted?", "test", productCategoriesResult.get(0).getName());
     }
 
 
