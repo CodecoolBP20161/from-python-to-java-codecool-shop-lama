@@ -8,6 +8,7 @@ import java.sql.SQLException;
  * Created by cave on 2016.11.21..
  */
 public class DatabaseConnection {
+
     private static final String DATABASE = "jdbc:postgresql://localhost:5432/codecoolshop";
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "postgres";
