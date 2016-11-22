@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.DatabaseConnection;
+import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -26,7 +27,7 @@ public class SupplierDaoTest {
     private Supplier supplier;
     private Supplier supplier2;
     private Connection connection;
-    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
 
     public SupplierDaoTest(SupplierDao implementation) throws SQLException {
@@ -42,7 +43,7 @@ public class SupplierDaoTest {
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
                 {SupplierDaoMem.getInstance()},
-                {SupplierDaoJdbc.getInstance(databaseConnectionMock)}
+                {SupplierDaoJdbc.getInstance()}
         });
     }
 
@@ -52,8 +53,8 @@ public class SupplierDaoTest {
         supplier2 = new Supplier("test2", "test2");
 
         if (connection != null) {
-            connection.setAutoCommit(false);
-            when(databaseConnectionMock.getConnection()).thenReturn(connection);
+//            connection.setAutoCommit(false);
+//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
             try {
                 statement.execute("DELETE FROM suppliers;");
@@ -76,7 +77,16 @@ public class SupplierDaoTest {
 
         List<Supplier> resultSuppliers = implementation.getAll();
 
-        assertEquals("get all suppliers", expectedSuppliers, resultSuppliers);
+        assertEquals(
+                "check first Supplier object",
+                expectedSuppliers.get(0).getName(),
+                resultSuppliers.get(0).getName()
+        );
+        assertEquals(
+                "check second Supplier object",
+                expectedSuppliers.get(1).getName(),
+                resultSuppliers.get(1).getName()
+        );
     }
 
     @Test
@@ -84,17 +94,23 @@ public class SupplierDaoTest {
 
         implementation.add(supplier);
 
-        assertTrue("is supplier in the list", implementation.getAll().contains(supplier));
+        assertEquals(
+                "is productCategory in the list",
+                supplier.getName(),
+                implementation.getAll().get(0).getName());
     }
 
     @Test
     public void removeSupplier() throws Exception {
         implementation.add(supplier);
         implementation.add(supplier2);
+        List<Supplier> suppliersExpected = implementation.getAll(); // for setId
 
-        implementation.remove(supplier2.getId());
+        implementation.remove(suppliersExpected.get(1).getId());
+        List<Supplier> suppliersResult = implementation.getAll();
 
-        assertFalse("Try to find supplier", implementation.getAll().contains(supplier2));
+        assertEquals("row number", 1, suppliersResult.size());
+        assertEquals("was the right one deleted?", "test", suppliersResult.get(0).getName());
     }
 
 
@@ -102,18 +118,19 @@ public class SupplierDaoTest {
     public void find() throws Exception {
         implementation.add(supplier);
         implementation.add(supplier2);
+        List<Supplier> suppliers = implementation.getAll(); // for setId
 
-        Supplier foundedSupplier = implementation.find(supplier2.getId());
+        Supplier foundedSupplier = implementation.find(suppliers.get(1).getId());
 
-        assertEquals("find supplier by ID", supplier2, foundedSupplier);
+        assertEquals("find supplier by ID", suppliers.get(1).getId(), foundedSupplier.getId());
     }
 
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
-            connection.rollback();
-            connection.close();
+//            connection.rollback();
+//            connection.close();
         }
     }
 }

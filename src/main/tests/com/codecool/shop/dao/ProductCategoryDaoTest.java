@@ -33,7 +33,7 @@ public class ProductCategoryDaoTest {
     private ProductCategory productCategory;
     private ProductCategory productCategory2;
     private Connection connection;
-    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
     public ProductCategoryDaoTest(ProductCategoryDao implementation) {
         this.implementation = implementation;
@@ -48,7 +48,7 @@ public class ProductCategoryDaoTest {
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
                 {ProductCategoryDaoMem.getInstance()},
-                {ProductCategoryDaoJdbc.getInstance(databaseConnectionMock)}
+                {ProductCategoryDaoJdbc.getInstance()}
         });
     }
 
@@ -58,8 +58,8 @@ public class ProductCategoryDaoTest {
         productCategory2 = new ProductCategory("test2", "test2", "test2");
 
         if (connection != null) {
-            connection.setAutoCommit(false);
-            when(databaseConnectionMock.getConnection()).thenReturn(connection);
+//            connection.setAutoCommit(false);
+//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
             try {
                 statement.execute("DELETE FROM product_categories;");
@@ -74,8 +74,6 @@ public class ProductCategoryDaoTest {
         assertNotNull("valid database name check", connection);
     }
 
-
-
     @Test
     public void getAll() throws Exception {
         implementation.add(productCategory);
@@ -84,7 +82,16 @@ public class ProductCategoryDaoTest {
 
         List<ProductCategory> resultProductCategories = implementation.getAll();
 
-        assertEquals("get all productCategories", expectedProductCategories, resultProductCategories);
+        assertEquals(
+                "check first ProductCategory object",
+                expectedProductCategories.get(0).getName(),
+                resultProductCategories.get(0).getName()
+        );
+        assertEquals(
+                "check second ProductCategory object",
+                expectedProductCategories.get(1).getName(),
+                resultProductCategories.get(1).getName()
+        );
     }
 
     @Test
@@ -92,17 +99,23 @@ public class ProductCategoryDaoTest {
 
         implementation.add(productCategory);
 
-        assertTrue("is productCategory in the list", implementation.getAll().contains(productCategory));
+        assertEquals(
+                "is productCategory in the list",
+                productCategory.getName(),
+                implementation.getAll().get(0).getName());
     }
 
     @Test
     public void removeProductCategory() throws Exception {
         implementation.add(productCategory);
         implementation.add(productCategory2);
+        List<ProductCategory> productCategoriesExpected = implementation.getAll();
 
-        implementation.remove(productCategory2.getId());
+        implementation.remove(productCategoriesExpected.get(1).getId());
+        List<ProductCategory> productCategoriesResult = implementation.getAll();
 
-        assertFalse("Try to find productCategory", implementation.getAll().contains(productCategory2));
+        assertEquals("row number", 1, productCategoriesResult.size());
+        assertEquals("was the right one deleted?", "test", productCategoriesResult.get(0).getName());
     }
 
 
@@ -110,18 +123,19 @@ public class ProductCategoryDaoTest {
     public void find() throws Exception {
         implementation.add(productCategory);
         implementation.add(productCategory2);
+        List<ProductCategory> productCategories = implementation.getAll(); // for setId
 
-        ProductCategory foundedProductCategory = implementation.find(productCategory2.getId());
+        ProductCategory foundedProductCategory = implementation.find(productCategories.get(1).getId());
 
-        assertEquals("find productCategory by ID", productCategory2, foundedProductCategory);
+        assertEquals("find productCategory by ID", productCategories.get(1).getId(), foundedProductCategory.getId());
     }
 
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
-            connection.rollback();
-            connection.close();
+//            connection.rollback();
+//            connection.close();
         }
     }
 
