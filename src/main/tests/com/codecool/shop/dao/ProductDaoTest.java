@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by cave on 2016.11.21..
@@ -120,7 +119,7 @@ public class ProductDaoTest {
         implementation.remove(productsExpected.get(1).getId());
         List<Product> productsResult = implementation.getAll();
 
-        assertEquals("row number", 1, productsResult.size(),);
+        assertEquals("row number", 1, productsResult.size());
         assertEquals("was the right one deleted?", "test", productsResult.get(0).getName());
     }
 
