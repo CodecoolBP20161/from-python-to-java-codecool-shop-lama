@@ -2,14 +2,14 @@ DROP TABLE IF EXISTS products, product_categories, suppliers;
 
 CREATE TABLE suppliers
 (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100),
   description VARCHAR(255)
 );
 
 CREATE TABLE product_categories
 (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100),
   description VARCHAR(255),
   department VARCHAR(100)
@@ -17,7 +17,7 @@ CREATE TABLE product_categories
 
 CREATE TABLE products
 (
-  id INTEGER PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100),
   description VARCHAR(255),
   default_price FLOAT,
