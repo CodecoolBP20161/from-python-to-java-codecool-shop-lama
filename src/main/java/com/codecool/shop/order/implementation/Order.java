@@ -9,6 +9,7 @@ import com.codecool.shop.order.Orderable;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import spark.Request;
 
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -43,7 +44,7 @@ public class Order implements Orderable {
         return itemsToOrder;
     }
 
-    public void addLineItem(int id){
+    public void addLineItem(int id) throws SQLException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         for (Product product : productDataStore.getAll()){
             if (id == product.getId()) addItemToOrder(product);

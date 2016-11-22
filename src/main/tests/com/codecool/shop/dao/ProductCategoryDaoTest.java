@@ -2,7 +2,6 @@ package com.codecool.shop.dao;
 
 import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.ProductCategory;
 import org.junit.After;
@@ -13,7 +12,6 @@ import org.junit.runners.Parameterized;
 import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -40,10 +38,7 @@ public class ProductCategoryDaoTest {
     public ProductCategoryDaoTest(ProductCategoryDao implementation) {
         this.implementation = implementation;
         try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/codecoolshop",
-                    "cave",
-                    "123456789");
+            this.connection = DatabaseConnection.getInstance().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

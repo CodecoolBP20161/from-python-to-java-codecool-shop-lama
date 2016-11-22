@@ -16,16 +16,16 @@ import java.util.List;
 /**
  * Created by cave on 2016.11.21..
  */
-public class ProductDaoJbdc implements ProductDao {
+public class ProductDaoJdbc implements ProductDao {
 
     private static DatabaseConnection databaseConnection;
-    private static ProductDaoJbdc productDaoJdbc;
+    private static ProductDaoJdbc productDaoJdbc;
 
 
-    public static ProductDaoJbdc getInstance(DatabaseConnection dbConnection) {
+    public static ProductDaoJdbc getInstance(DatabaseConnection dbConnection) {
 
         if (productDaoJdbc == null) {
-            productDaoJdbc = new ProductDaoJbdc();
+            productDaoJdbc = new ProductDaoJdbc();
             databaseConnection = dbConnection;
         }
 
@@ -33,10 +33,10 @@ public class ProductDaoJbdc implements ProductDao {
     }
 
 
-    public static ProductDaoJbdc getInstance() {
+    public static ProductDaoJdbc getInstance() {
 
         if (productDaoJdbc == null) {
-            productDaoJdbc = new ProductDaoJbdc();
+            productDaoJdbc = new ProductDaoJdbc();
             databaseConnection = DatabaseConnection.getInstance();
 
         }
@@ -44,7 +44,7 @@ public class ProductDaoJbdc implements ProductDao {
         return productDaoJdbc;
     }
 
-    private ProductDaoJbdc() {
+    private ProductDaoJdbc() {
     }
 
     @Override
@@ -73,13 +73,17 @@ public class ProductDaoJbdc implements ProductDao {
     }
 
     @Override
-    public Product find(int id) throws SQLException {
-
-        Connection connection = databaseConnection.getConnection();
-        String cSQL = "SELECT * FROM PRODUCT WHERE ID =" + id;
-        ResultSet result = connection.createStatement().executeQuery(cSQL);
-
-        return createInstance(result);
+    public Product find(int id){
+        Connection connection = null;
+        try {
+            connection = databaseConnection.getConnection();
+            String cSQL = "SELECT * FROM PRODUCT WHERE ID =" + id;
+            ResultSet result = connection.createStatement().executeQuery(cSQL);
+            return createInstance(result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -87,22 +91,37 @@ public class ProductDaoJbdc implements ProductDao {
 
 
     @Override
-    public List<Product> getAll() throws SQLException {
+    public List<Product> getAll(){
 
         String cSQL = "SELECT * FROM PRODUCT";
-        return InstanceList(cSQL);
+        try {
+            return InstanceList(cSQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) throws SQLException {
+    public List<Product> getBy(Supplier supplier){
         String cSQL = "SELECT * FROM PRODUCT where supplier =" + supplier.getId();
-        return InstanceList(cSQL);
+        try {
+            return InstanceList(cSQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public List<Product> getBy(ProductCategory productCategory) throws SQLException {
+    public List<Product> getBy(ProductCategory productCategory){
         String cSQL = "SELECT * FROM PRODUCT where category =" + productCategory.getId();
-        return InstanceList(cSQL);
+        try {
+            return InstanceList(cSQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
