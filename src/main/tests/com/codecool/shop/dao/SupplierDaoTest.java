@@ -5,12 +5,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import com.codecool.shop.dao.implementation.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.Supplier;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Suite;
 import org.postgresql.util.PSQLException;
 
 import java.sql.*;
@@ -44,7 +47,8 @@ public class SupplierDaoTest {
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
-                {SupplierDaoMem.getInstance()}
+                {SupplierDaoMem.getInstance()},
+                {SupplierDaoJdbc.getInstance(databaseConnectionMock)}
         });
     }
 
