@@ -1,11 +1,15 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.DatabaseConnection;
+import com.codecool.shop.model.Supplier;
+
+import java.util.List;
 
 /**
  * Created by cave on 2016.11.22..
  */
-public class SupplierDaoJdbc {
+public class SupplierDaoJdbc implements SupplierDao{
     private static SupplierDaoJdbc instance;
 
     private static DatabaseConnection databaseConnection;
@@ -27,5 +31,25 @@ public class SupplierDaoJdbc {
     }
 
     private SupplierDaoJdbc() {
+    }
+
+    @Override
+    public void add(Supplier category) {
+        
+    }
+
+    @Override
+    public Supplier find(int id) {
+        return null;
+    }
+
+    @Override
+    public void remove(int id) {
+
+    }
+
+    @Override
+    public List<Supplier> getAll() {
+        return null;
     }
 }
