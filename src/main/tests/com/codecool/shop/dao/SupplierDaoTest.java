@@ -26,7 +26,7 @@ public class SupplierDaoTest {
     private Supplier supplier;
     private Supplier supplier2;
     private Connection connection;
-    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
 
     public SupplierDaoTest(SupplierDao implementation) throws SQLException {
@@ -42,7 +42,7 @@ public class SupplierDaoTest {
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
                 {SupplierDaoMem.getInstance()},
-                {SupplierDaoJdbc.getInstance(databaseConnectionMock)}
+                {SupplierDaoJdbc.getInstance()}
         });
     }
 
@@ -52,8 +52,8 @@ public class SupplierDaoTest {
         supplier2 = new Supplier("test2", "test2");
 
         if (connection != null) {
-            connection.setAutoCommit(false);
-            when(databaseConnectionMock.getConnection()).thenReturn(connection);
+//            connection.setAutoCommit(false);
+//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
             try {
                 statement.execute("DELETE FROM suppliers;");
@@ -112,8 +112,8 @@ public class SupplierDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
-            connection.rollback();
-            connection.close();
+//            connection.rollback();
+//            connection.close();
         }
     }
 }

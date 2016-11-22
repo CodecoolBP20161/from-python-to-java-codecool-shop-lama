@@ -39,7 +39,7 @@ public class ProductDaoTest {
     private Supplier supplier = new Supplier("test", "test");
     private Supplier supplier2 = new Supplier("test2", "test2");
     private Connection connection;
-    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
     public ProductDaoTest(ProductDao implementation) {
         this.implementation = implementation;
@@ -54,7 +54,7 @@ public class ProductDaoTest {
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
                 {ProductDaoMem.getInstance()},
-                {ProductDaoJdbc.getInstance(databaseConnectionMock)}
+                {ProductDaoJdbc.getInstance()}
         });
     }
 
@@ -64,8 +64,8 @@ public class ProductDaoTest {
         product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2);
 
         if (connection != null) {
-            connection.setAutoCommit(false);
-            when(databaseConnectionMock.getConnection()).thenReturn(connection);
+//            connection.setAutoCommit(false);
+//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
             try {
                 statement.execute("DELETE FROM products;");
@@ -141,8 +141,8 @@ public class ProductDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
-            connection.rollback();
-            connection.close();
+//            connection.rollback();
+//            connection.close();
         }
     }
 }
