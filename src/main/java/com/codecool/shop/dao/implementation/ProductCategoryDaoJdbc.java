@@ -36,15 +36,13 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        category.setId(getNumberOfCategories()+1);
         try {
             PreparedStatement preparedStatement = databaseConnection.getConnection()
-                    .prepareStatement("INSERT INTO product_categories (id, name, description, department) VALUES (?, ?, ?, ?);");
-            preparedStatement.setInt(1, category.getId());
-            preparedStatement.setString(2, category.getName());
-            preparedStatement.setString(3, category.getDescription());
-            preparedStatement.setString(4, category.getDepartment());
-            preparedStatement.executeQuery();
+                    .prepareStatement("INSERT INTO product_categories (name, description, department) VALUES (?, ?, ?);");
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setString(2, category.getDescription());
+            preparedStatement.setString(3, category.getDepartment());
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,7 +74,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
             PreparedStatement preparedStatement = databaseConnection.getConnection()
                     .prepareStatement("DELETE FROM product_categories WHERE id = ?;");
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -113,24 +111,4 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
             e.printStackTrace();
         }
     }
-
-    private int getNumberOfCategories(){
-        String query = "SELECT count(*) FROM product_categories;";
-        try (Connection connection = databaseConnection.getConnection();
-             Statement statement =connection.createStatement()
-        ){
-            ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()){
-                return resultSet.getInt("count");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-
-    }
-
-//    public static void main(String [ ] args){
-//        System.out.println(getInstance().getNumberOfCategories());
-//    }
 }
