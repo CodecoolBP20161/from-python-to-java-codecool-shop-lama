@@ -5,12 +5,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+import com.codecool.shop.dao.implementation.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.Supplier;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Suite;
 import org.postgresql.util.PSQLException;
 
 import java.sql.*;
@@ -36,7 +39,7 @@ public class SupplierDaoTest {
                     "jdbc:postgresql://localhost:5432/codecoolshop",
                     "cave",
                     "123456789");
-        } catch (PSQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -44,7 +47,8 @@ public class SupplierDaoTest {
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
-                {SupplierDaoMem.getInstance()}
+                {SupplierDaoMem.getInstance()},
+                {SupplierDaoJdbc.getInstance(databaseConnectionMock)}
         });
     }
 
@@ -57,7 +61,11 @@ public class SupplierDaoTest {
             connection.setAutoCommit(false);
             when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
-            statement.execute("DELETE FROM suppliers;");
+            try {
+                statement.execute("DELETE FROM suppliers;");
+            } catch (PSQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
