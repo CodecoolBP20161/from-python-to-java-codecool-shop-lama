@@ -1,13 +1,19 @@
 package com.codecool.shop.dao;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
+import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.Supplier;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -19,15 +25,23 @@ public class SupplierDaoTest {
     private SupplierDao implementation;
     private Supplier supplier;
     private Supplier supplier2;
+    private Connection connection;
+    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
 
-    public SupplierDaoTest(SupplierDao implementation) {
+
+    public SupplierDaoTest(SupplierDao implementation) throws SQLException {
         this.implementation = implementation;
+        this.connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/codecoolshop",
+                "cave",
+                "123456789");
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
-                {SupplierDaoMem.getInstance()}
+                {SupplierDaoMem.getInstance()},
+                {SupplierDaoJdbc.getInstance(databaseConnectionMock)}
         });
     }
 
@@ -35,6 +49,11 @@ public class SupplierDaoTest {
     public void setUp() throws Exception {
         supplier = new Supplier("test", "test");
         supplier2 = new Supplier("test2", "test2");
+
+        connection.setAutoCommit(false);
+        when(databaseConnectionMock.getConnection()).thenReturn(connection);
+        Statement statement = connection.createStatement();
+        statement.execute("DELETE FROM suppliers;");
     }
 
     @Test
@@ -80,5 +99,7 @@ public class SupplierDaoTest {
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
+        connection.rollback();
+        connection.close();
     }
 }
