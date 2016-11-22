@@ -14,7 +14,6 @@ import org.junit.runners.Parameterized;
 import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -45,10 +44,7 @@ public class ProductDaoTest {
     public ProductDaoTest(ProductDao implementation) {
         this.implementation = implementation;
         try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/codecoolshop",
-                    "cave",
-                    "123456789");
+            this.connection = DatabaseConnection.getInstance().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

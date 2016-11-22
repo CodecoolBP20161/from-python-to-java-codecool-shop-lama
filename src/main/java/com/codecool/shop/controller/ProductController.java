@@ -12,12 +12,13 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProductController {
 
-    public static ModelAndView renderProducts(Request req, Response res) {
+    public static ModelAndView renderProducts(Request req, Response res) throws SQLException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
