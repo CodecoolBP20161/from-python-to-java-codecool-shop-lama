@@ -12,12 +12,16 @@ import java.util.List;
 public class SupplierDaoJdbc implements SupplierDao{
 
     private static SupplierDaoJdbc instance;
-    private static DatabaseConnection databaseConnection;
+    private static Connection databaseConnection;
 
     public static SupplierDaoJdbc getInstance() {
         if (instance == null) {
             instance = new SupplierDaoJdbc();
-            databaseConnection = DatabaseConnection.getInstance();
+            try {
+                databaseConnection = DatabaseConnection.getInstance().getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
     }
@@ -25,7 +29,11 @@ public class SupplierDaoJdbc implements SupplierDao{
     public static SupplierDaoJdbc getInstance(DatabaseConnection dbConnection) {
         if (instance == null) {
             instance = new SupplierDaoJdbc();
-            databaseConnection = dbConnection;
+            try {
+                databaseConnection = dbConnection.getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
     }
@@ -36,7 +44,7 @@ public class SupplierDaoJdbc implements SupplierDao{
     @Override
     public void add(Supplier supplier) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = databaseConnection
                     .prepareStatement("INSERT INTO suppliers (name, description) VALUES (?, ?);");
             preparedStatement.setString(1, supplier.getName());
             preparedStatement.setString(2, supplier.getDescription());
@@ -49,7 +57,7 @@ public class SupplierDaoJdbc implements SupplierDao{
     @Override
     public Supplier find(int id) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = databaseConnection
                     .prepareStatement("SELECT * FROM suppliers WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -68,7 +76,7 @@ public class SupplierDaoJdbc implements SupplierDao{
     @Override
     public void remove(int id) {
         try {
-            PreparedStatement preparedStatement = databaseConnection.getConnection()
+            PreparedStatement preparedStatement = databaseConnection
                     .prepareStatement("DELETE FROM suppliers WHERE id = ?;");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
@@ -81,8 +89,7 @@ public class SupplierDaoJdbc implements SupplierDao{
     public List<Supplier> getAll() {
         List<Supplier> DATA = new ArrayList<>();
         String query = "SELECT * FROM suppliers;";
-        try (Connection connection = databaseConnection.getConnection();
-             Statement statement =connection.createStatement();
+        try (Statement statement = databaseConnection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
         ){
             while (resultSet.next()){

@@ -55,12 +55,7 @@ public class SupplierDaoTest {
         if (connection != null) {
 //            connection.setAutoCommit(false);
 //            when(databaseConnectionMock.getConnection()).thenReturn(connection);
-            Statement statement = connection.createStatement();
-            try {
-                statement.execute("DELETE FROM suppliers;");
-            } catch (PSQLException e){
-                e.printStackTrace();
-            }
+            setupTables();
         }
     }
 
@@ -129,8 +124,19 @@ public class SupplierDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
+            setupTables();
 //            connection.rollback();
 //            connection.close();
+        }
+    }
+
+    private void setupTables() {
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("DELETE FROM products;");
+            statement.execute("DELETE FROM suppliers;");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
