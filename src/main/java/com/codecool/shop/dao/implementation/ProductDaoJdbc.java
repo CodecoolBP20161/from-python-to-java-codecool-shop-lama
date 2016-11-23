@@ -1,10 +1,7 @@
 package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.model.DatabaseConnection;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by cave on 2016.11.21..
- */
 public class ProductDaoJdbc implements ProductDao {
 
     private static Connection databaseConnection;
@@ -63,8 +57,8 @@ public class ProductDaoJdbc implements ProductDao {
                             "VALUES (?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setFloat(2, product.getDefaultPrice());
-            preparedStatement.setInt(3, queryProductCategory(product.getProductCategory()));
-            preparedStatement.setInt(4, querySupplier(product.getSupplier()));
+            preparedStatement.setInt(3, groupQuery(product.getProductCategory()));
+            preparedStatement.setInt(4, groupQuery(product.getSupplier()));
             preparedStatement.setString(5, product.getDescription());
             preparedStatement.setString(6, String.valueOf(product.getDefaultCurrency()));
             preparedStatement.setString(7, product.getImageSource());
@@ -74,29 +68,15 @@ public class ProductDaoJdbc implements ProductDao {
         }
     }
 
-    private int queryProductCategory(ProductCategory productCategory) {
+    private int groupQuery(BaseModel baseModel) {
+        String group = ((Supplier.class.isInstance(baseModel)) ? "suppliers" : "product_categories");
         try {
             PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("SELECT id FROM product_categories WHERE name = ?;");
-            preparedStatement.setString(1, productCategory.getName());
+                    .prepareStatement("SELECT id FROM " + group + " WHERE name = ?;");
+            preparedStatement.setString(1, baseModel.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                return resultSet.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    private int querySupplier(Supplier supplier) {
-        try {
-            PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("SELECT id FROM suppliers WHERE name = ?;");
-            preparedStatement.setString(1, supplier.getName());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                return resultSet.getInt("id");
+                return resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,43 +116,44 @@ public class ProductDaoJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll(){
-
-        String cSQL = "SELECT * FROM products";
         try {
-            return InstanceList(cSQL);
+            PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("SELECT * FROM products;");
+            return InstanceList(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
+        return new ArrayList<>();
     }
 
-    @Override
-    public List<Product> getBy(Supplier supplier){
-        String cSQL = "SELECT * FROM products where supplier =" + supplier.getId();
+    private List<Product> getByBaseModel(BaseModel baseModel){
+        String group = ((Supplier.class.isInstance(baseModel)) ? "supplier" : "product_category");
         try {
-            return InstanceList(cSQL);
+            PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("SELECT * FROM products where " + group + " = ?;");
+            preparedStatement.setInt(1, baseModel.getId());
+            return InstanceList(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
+        return new ArrayList<>();
     }
 
     @Override
     public List<Product> getBy(ProductCategory productCategory){
-        String cSQL = "SELECT * FROM products where product_category = " + productCategory.getId();
-        try {
-            return InstanceList(cSQL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        return getInstance().getByBaseModel(productCategory);
+    }
+
+    @Override
+    public List<Product> getBy(Supplier supplier){
+        return getInstance().getByBaseModel(supplier);
     }
 
 
 
-    private List<Product> InstanceList(String sql) throws SQLException {
+    private List<Product> InstanceList(PreparedStatement preparedStatement) throws SQLException {
         List<Product> productList = new ArrayList<>();
-        ResultSet result = databaseConnection.createStatement().executeQuery(sql);
+        ResultSet result = preparedStatement.executeQuery();
         while (result.next()){
             productList.add(createInstance(result));
         }
@@ -187,13 +168,11 @@ public class ProductDaoJdbc implements ProductDao {
         String currency = result.getString("default_currency");
         int categoryID = result.getInt("product_category");
         int supplierID = result.getInt("supplier");
-        String image = result.getString("image");
+        String image = result.getString("imageSource");
         ProductCategory category = ProductCategoryDaoJdbc.getInstance().find(categoryID);
         Supplier supplier = SupplierDaoJdbc.getInstance().find(supplierID);
         Product product = new Product(name, defaultPrice, currency, description, category, supplier, image);
         product.setId(result.getInt("id"));
         return product;
     }
-
-
 }
