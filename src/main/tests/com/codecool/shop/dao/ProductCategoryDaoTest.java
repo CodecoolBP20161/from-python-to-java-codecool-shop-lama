@@ -58,7 +58,7 @@ public class ProductCategoryDaoTest {
         productCategory2 = new ProductCategory("test2", "test2", "test2");
 
         if (connection != null) {
-            connection.setAutoCommit(false);
+//            connection.setAutoCommit(false);
             when(databaseConnectionMock.getConnection()).thenReturn(connection);
             Statement statement = connection.createStatement();
             try {
@@ -120,8 +120,8 @@ public class ProductCategoryDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (connection != null) {
-            connection.rollback();
-            connection.close();
+//            connection.rollback();
+//            connection.close();
         }
     }
 
