@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by cave on 2016.11.23..
- */
 public class IntIdGenerator {
     private List<Integer> listOfIds;
 
