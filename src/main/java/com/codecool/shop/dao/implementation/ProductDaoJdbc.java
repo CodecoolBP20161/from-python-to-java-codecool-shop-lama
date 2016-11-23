@@ -59,14 +59,15 @@ public class ProductDaoJdbc implements ProductDao {
     public void add(Product product) {
         try {
             PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("INSERT INTO products (name, default_price, product_category, supplier, description, default_currency) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("INSERT INTO products (name, default_price, product_category, supplier, description, default_currency, imageSource) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setFloat(2, product.getDefaultPrice());
             preparedStatement.setInt(3, queryProductCategory(product.getProductCategory()));
             preparedStatement.setInt(4, querySupplier(product.getSupplier()));
             preparedStatement.setString(5, product.getDescription());
             preparedStatement.setString(6, String.valueOf(product.getDefaultCurrency()));
+            preparedStatement.setString(7, product.getImageSource());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -186,9 +187,10 @@ public class ProductDaoJdbc implements ProductDao {
         String currency = result.getString("default_currency");
         int categoryID = result.getInt("product_category");
         int supplierID = result.getInt("supplier");
+        String image = result.getString("image");
         ProductCategory category = ProductCategoryDaoJdbc.getInstance().find(categoryID);
         Supplier supplier = SupplierDaoJdbc.getInstance().find(supplierID);
-        Product product = new Product(name, defaultPrice, currency, description, category, supplier);
+        Product product = new Product(name, defaultPrice, currency, description, category, supplier, image);
         product.setId(result.getInt("id"));
         return product;
     }
