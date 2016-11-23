@@ -4,9 +4,6 @@ import java.text.NumberFormat;
 
 import com.codecool.shop.model.Product;
 
-/**
- * Created by annakertesz on 11/8/16.
- */
 public class LineItem {
     private int id;
     private Product product;
