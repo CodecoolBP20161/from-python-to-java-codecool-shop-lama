@@ -26,7 +26,6 @@ public class ProductDaoJdbc implements ProductDao {
                 e.printStackTrace();
             }
         }
-
         return productDaoJdbc;
     }
 
@@ -36,13 +35,11 @@ public class ProductDaoJdbc implements ProductDao {
         if (productDaoJdbc == null) {
             productDaoJdbc = new ProductDaoJdbc();
             try {
-                databaseConnection = DatabaseConnection.getInstance().getConnection();
+                databaseConnection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
-
         return productDaoJdbc;
     }
 
@@ -75,9 +72,7 @@ public class ProductDaoJdbc implements ProductDao {
                     .prepareStatement("SELECT id FROM " + group + " WHERE name = ?;");
             preparedStatement.setString(1, baseModel.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                return resultSet.getInt(1);
-            }
+            if (resultSet.next()) return resultSet.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,14 +86,27 @@ public class ProductDaoJdbc implements ProductDao {
                     .prepareStatement("SELECT * FROM products WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                Product product = createInstance(resultSet);
-                return product;
-            }
+            if (resultSet.next()) return createInstance(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Product createInstance(ResultSet result) throws SQLException {
+
+        String name = result.getString("name");
+        float defaultPrice = result.getInt("default_price");
+        String description = result.getString("description");
+        String currency = result.getString("default_currency");
+        int categoryID = result.getInt("product_category");
+        int supplierID = result.getInt("supplier");
+        String image = result.getString("imageSource");
+        ProductCategory category = ProductCategoryDaoJdbc.getInstance().find(categoryID);
+        Supplier supplier = SupplierDaoJdbc.getInstance().find(supplierID);
+        Product product = new Product(name, defaultPrice, currency, description, category, supplier, image);
+        product.setId(result.getInt("id"));
+        return product;
     }
 
     @Override
@@ -126,6 +134,20 @@ public class ProductDaoJdbc implements ProductDao {
         return new ArrayList<>();
     }
 
+    private List<Product> InstanceList(PreparedStatement preparedStatement) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()){
+            productList.add(createInstance(result));
+        }
+        return productList;
+    }
+
+    @Override
+    public List<Product> getBy(ProductCategory productCategory){
+        return getInstance().getByBaseModel(productCategory);
+    }
+
     private List<Product> getByBaseModel(BaseModel baseModel){
         String group = ((Supplier.class.isInstance(baseModel)) ? "supplier" : "product_category");
         try {
@@ -140,39 +162,7 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getBy(ProductCategory productCategory){
-        return getInstance().getByBaseModel(productCategory);
-    }
-
-    @Override
     public List<Product> getBy(Supplier supplier){
         return getInstance().getByBaseModel(supplier);
-    }
-
-
-
-    private List<Product> InstanceList(PreparedStatement preparedStatement) throws SQLException {
-        List<Product> productList = new ArrayList<>();
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()){
-            productList.add(createInstance(result));
-        }
-        return productList;
-    }
-
-    private Product createInstance(ResultSet result) throws SQLException {
-
-        String name = result.getString("name");
-        float defaultPrice = result.getInt("default_price");
-        String description = result.getString("description");
-        String currency = result.getString("default_currency");
-        int categoryID = result.getInt("product_category");
-        int supplierID = result.getInt("supplier");
-        String image = result.getString("imageSource");
-        ProductCategory category = ProductCategoryDaoJdbc.getInstance().find(categoryID);
-        Supplier supplier = SupplierDaoJdbc.getInstance().find(supplierID);
-        Product product = new Product(name, defaultPrice, currency, description, category, supplier, image);
-        product.setId(result.getInt("id"));
-        return product;
     }
 }

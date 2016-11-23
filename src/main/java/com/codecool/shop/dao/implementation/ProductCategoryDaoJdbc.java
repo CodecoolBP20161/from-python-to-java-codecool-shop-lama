@@ -19,7 +19,7 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
         if (instance == null) {
             instance = new ProductCategoryDaoJdbc();
             try {
-                connection = DatabaseConnection.getInstance().getConnection();
+                connection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
