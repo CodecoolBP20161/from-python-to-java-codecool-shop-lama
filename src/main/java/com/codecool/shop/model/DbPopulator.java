@@ -7,9 +7,6 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.SupplierDaoJdbc;
 
-/**
- * Created by annakertesz on 11/23/16.
- */
 public class DbPopulator {
 
     public static void populateData() {

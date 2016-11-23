@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by cave on 2016.11.10..
- */
 public class OrderController {
 
     public static void addProductToCart(Request req) throws SQLException {

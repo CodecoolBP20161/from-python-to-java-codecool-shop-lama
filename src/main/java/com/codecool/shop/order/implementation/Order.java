@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Created by annakertesz on 11/8/16.
- */
 public class Order implements Orderable {
 
     private String id;
@@ -54,7 +51,7 @@ public class Order implements Orderable {
 
     private void addItemToOrder(Product product){
         for (LineItem lineItem : itemsToOrder) {
-            if (lineItem.getProduct().equals(product)){
+            if (lineItem.getProduct().getId() == product.getId()){
                 lineItem.increaseQuantity();
                 return;
             }
