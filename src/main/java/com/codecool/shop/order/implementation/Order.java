@@ -2,6 +2,7 @@ package com.codecool.shop.order.implementation;
 
 import com.codecool.shop.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.ProductDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.LineItem;
@@ -45,7 +46,7 @@ public class Order implements Orderable {
     }
 
     public void addLineItem(int id) throws SQLException {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductDao productDataStore = ProductDaoJdbc.getInstance();
         for (Product product : productDataStore.getAll()){
             if (id == product.getId()) addItemToOrder(product);
         }
