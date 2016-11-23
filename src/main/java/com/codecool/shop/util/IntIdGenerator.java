@@ -21,7 +21,9 @@ public class IntIdGenerator {
     }
 
     public int generateID() {
-        int id = Collections.max(listOfIds) + 1;
+        int id = 1;
+        if (listOfIds.size() == 0) return id;
+        id = Collections.max(listOfIds) + 1;
         if (id < 0) id = checkIdFromOne();
         return id;
     }
