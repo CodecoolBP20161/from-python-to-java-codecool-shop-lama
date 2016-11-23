@@ -1,10 +1,13 @@
 package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.model.BaseModel;
 import com.codecool.shop.model.Supplier;
+import com.codecool.shop.util.IntIdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SupplierDaoMem implements SupplierDao {
 
@@ -24,9 +27,11 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     @Override
-    public void add(Supplier category) {
-        category.setId(DATA.size() + 1);
-        DATA.add(category);
+    public void add(Supplier supplier) {
+        List<Integer> idList = DATA.stream().map(BaseModel::getId).collect(Collectors.toList());
+        IntIdGenerator idGenerator = new IntIdGenerator(idList);
+        supplier.setId(idGenerator.generateID());
+        DATA.add(supplier);
     }
 
     @Override
