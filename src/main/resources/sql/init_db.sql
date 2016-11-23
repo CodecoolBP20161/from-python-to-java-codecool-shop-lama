@@ -23,5 +23,6 @@ CREATE TABLE products
   default_price FLOAT,
   default_currency VARCHAR(10),
   product_category INTEGER REFERENCES product_categories(id),
-  supplier INTEGER REFERENCES suppliers(id)
+  supplier INTEGER REFERENCES suppliers(id),
+  imageSource VARCHAR(250)
 );

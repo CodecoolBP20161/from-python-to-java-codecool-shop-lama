@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -59,8 +58,8 @@ public class ProductDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        product = new Product("test", 1.0f, "HUF", "test", productCategory, supplier);
-        product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2);
+        product = new Product("test", 1.0f, "HUF", "test", productCategory, supplier, "test");
+        product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2, "test2");
 
         if (connection != null) {
 //            connection.setAutoCommit(false);

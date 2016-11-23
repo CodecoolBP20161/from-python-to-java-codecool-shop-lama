@@ -4,7 +4,6 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import com.codecool.shop.order.implementation.Order;
-import org.eclipse.jetty.server.session.JDBCSessionManager;
 import org.junit.Before;
 import org.junit.Test;
 import spark.ModelAndView;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,8 +43,8 @@ public class ProductControllerTest {
         productCategory2.setId(2);
         supplier1 = new Supplier("test1", "test1");
         supplier2 = new Supplier("test2", "test2");
-        product1 = new Product("test", 1.0f, "HUF", "test", productCategory1, supplier1);
-        product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2);
+        product1 = new Product("test", 1.0f, "HUF", "test", productCategory1, supplier1, "test");
+        product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2, "test2");
     }
 
     @Test
