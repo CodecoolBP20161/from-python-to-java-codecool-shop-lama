@@ -31,13 +31,17 @@ public class ProductCategoryDaoTest {
     private ProductCategoryDao implementation;
     private ProductCategory productCategory;
     private ProductCategory productCategory2;
-    private Connection connection;
-//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+    private static Connection baseConnection;
+    private static DatabaseConnection testDatabaseConnection = DatabaseConnection
+            .getInstance("src/main/resources/properties/test_db_config.properties");
+    private static Connection testConnection;
 
     public ProductCategoryDaoTest(ProductCategoryDao implementation) {
         this.implementation = implementation;
         try {
-            this.connection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
+            baseConnection = DatabaseConnection
+                    .getInstance("src/main/resources/properties/db_config.properties").getConnection();
+            testConnection = testDatabaseConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,7 +60,7 @@ public class ProductCategoryDaoTest {
         productCategory = new ProductCategory("test", "test", "test");
         productCategory2 = new ProductCategory("test2", "test2", "test2");
 
-        if (connection != null) {
+        if (testConnection != null) {
 //            connection.setAutoCommit(false);
 //            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             setupTables();
@@ -66,7 +70,7 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void testDbConnection() throws Exception {
-        assertNotNull("valid database name check", connection);
+        assertNotNull("valid database name check", baseConnection);
     }
 
     @Test
@@ -128,7 +132,7 @@ public class ProductCategoryDaoTest {
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
-        if (connection != null) {
+        if (testConnection != null) {
             setupTables();
 //            connection.rollback();
 //            connection.close();
@@ -137,7 +141,7 @@ public class ProductCategoryDaoTest {
 
     private void setupTables() {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = testConnection.createStatement();
             statement.execute("DELETE FROM products;");
             statement.execute("DELETE FROM product_categories;");
         } catch (SQLException e) {
