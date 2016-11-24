@@ -42,7 +42,7 @@ public class ProductDaoTest {
     public ProductDaoTest(ProductDao implementation) {
         this.implementation = implementation;
         try {
-            this.connection = DatabaseConnection.getInstance().getConnection();
+            this.connection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
