@@ -1,6 +1,6 @@
 import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
-import com.codecool.shop.model.DbPopulator;
+import com.codecool.shop.controller.DbPopulator;
 import com.codecool.shop.order.implementation.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 

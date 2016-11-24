@@ -26,24 +26,25 @@ public class SupplierDaoTest {
     private SupplierDao implementation;
     private Supplier supplier;
     private Supplier supplier2;
-    private Connection connection;
-//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+    private static Connection baseConnection;
+    private static DatabaseConnection testDatabaseConnection = DatabaseConnection
+            .getInstance("src/main/resources/properties/test_db_config.properties");
+    private static Connection testConnection;
+
 
 
     public SupplierDaoTest(SupplierDao implementation) throws SQLException {
         this.implementation = implementation;
-        try {
-            this.connection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        baseConnection = DatabaseConnection
+                .getInstance("src/main/resources/properties/db_config.properties").getConnection();
+        testConnection = testDatabaseConnection.getConnection();
     }
 
     @Parameterized.Parameters
     public static Collection<Object[]> instancesToTest() {
         return Arrays.asList(new Object[][] {
                 {SupplierDaoMem.getInstance()},
-                {SupplierDaoJdbc.getInstance()}
+                {SupplierDaoJdbc.getInstance(testDatabaseConnection)}
         });
     }
 
@@ -52,7 +53,7 @@ public class SupplierDaoTest {
         supplier = new Supplier("test", "test");
         supplier2 = new Supplier("test2", "test2");
 
-        if (connection != null) {
+        if (testConnection != null) {
 //            connection.setAutoCommit(false);
 //            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             setupTables();
@@ -61,7 +62,7 @@ public class SupplierDaoTest {
 
     @Test
     public void testDbConnection() throws Exception {
-        assertNotNull("valid database name check", connection);
+        assertNotNull("valid database name check", baseConnection);
     }
 
     @Test
@@ -123,7 +124,7 @@ public class SupplierDaoTest {
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
-        if (connection != null) {
+        if (testConnection != null) {
             setupTables();
 //            connection.rollback();
 //            connection.close();
@@ -132,7 +133,7 @@ public class SupplierDaoTest {
 
     private void setupTables() {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = testConnection.createStatement();
             statement.execute("DELETE FROM products;");
             statement.execute("DELETE FROM suppliers;");
         } catch (SQLException e) {

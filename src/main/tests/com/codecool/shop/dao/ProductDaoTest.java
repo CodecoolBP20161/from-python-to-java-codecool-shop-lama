@@ -36,13 +36,17 @@ public class ProductDaoTest {
     private ProductCategory productCategory2 = new ProductCategory("test2", "test2", "test2");
     private Supplier supplier = new Supplier("test", "test");
     private Supplier supplier2 = new Supplier("test2", "test2");
-    private Connection connection;
-//    private static DatabaseConnection databaseConnectionMock = mock(DatabaseConnection.class);
+    private static Connection baseConnection;
+    private static DatabaseConnection testDatabaseConnection = DatabaseConnection
+            .getInstance("src/main/resources/properties/test_db_config.properties");
+    private static Connection testConnection;
 
     public ProductDaoTest(ProductDao implementation) {
         this.implementation = implementation;
         try {
-            this.connection = DatabaseConnection.getInstance("src/main/resources/properties/db_config.properties").getConnection();
+            baseConnection = DatabaseConnection
+                    .getInstance("src/main/resources/properties/db_config.properties").getConnection();
+            testConnection = testDatabaseConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,7 +65,7 @@ public class ProductDaoTest {
         product = new Product("test", 1.0f, "HUF", "test", productCategory, supplier, "test");
         product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2, "test2");
 
-        if (connection != null) {
+        if (testConnection != null) {
 //            connection.setAutoCommit(false);
 //            when(databaseConnectionMock.getConnection()).thenReturn(connection);
             setupTables();
@@ -70,7 +74,7 @@ public class ProductDaoTest {
 
     @Test
     public void testDbConnection() throws Exception {
-        assertNotNull("valid database name check", connection);
+        assertNotNull("valid database name check", baseConnection);
     }
 
     @Test
@@ -133,8 +137,9 @@ public class ProductDaoTest {
     public void getByProductCategory() throws Exception {
         implementation.add(product);
         implementation.add(product2);
+        List<Product> allProducts = implementation.getAll(); // get ID
 
-        List<Product> foundedProducts = implementation.getBy(productCategory2);
+        List<Product> foundedProducts = implementation.getBy(allProducts.get(1).getProductCategory());
 
         assertEquals("list length", 1, foundedProducts.size());
         assertEquals("first elem match?", product2.getName(), foundedProducts.get(0).getName());
@@ -144,9 +149,9 @@ public class ProductDaoTest {
     public void getBySupplier() throws Exception {
         implementation.add(product);
         implementation.add(product2);
+        List<Product> allProducts = implementation.getAll(); // get ID
 
-        
-        List<Product> foundedProducts = implementation.getBy(supplier2);
+        List<Product> foundedProducts = implementation.getBy(allProducts.get(1).getProductCategory());
 
         assertEquals("list length", 1, foundedProducts.size());
         assertEquals("first elem match?", product2.getName(), foundedProducts.get(0).getName());
@@ -193,7 +198,7 @@ public class ProductDaoTest {
     @After
     public void tearDown() throws Exception {
         implementation.getAll().clear();
-        if (connection != null) {
+        if (testConnection != null) {
             setupTables();
 //            connection.rollback();
 //            connection.close();
@@ -202,7 +207,7 @@ public class ProductDaoTest {
 
     private void setupTables() {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = testConnection.createStatement();
             statement.execute("DELETE FROM products;");
             statement.execute("DELETE FROM product_categories;");
             statement.execute("DELETE FROM suppliers;");
@@ -215,7 +220,7 @@ public class ProductDaoTest {
 
     private void insertNecessarySuppliers() {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = testConnection.createStatement();
             statement.execute("INSERT INTO suppliers (name, description) VALUES ('test', 'test');");
             statement.execute("INSERT INTO suppliers (name, description) VALUES ('test2', 'test2');");
         } catch (SQLException e) {
@@ -225,7 +230,7 @@ public class ProductDaoTest {
 
     private void insertNecessaryCategories() {
         try {
-            Statement statement = connection.createStatement();
+            Statement statement = testConnection.createStatement();
             statement.execute("INSERT INTO product_categories (name, description, department)" +
                     "VALUES ('test', 'test', 'test');");
             statement.execute("INSERT INTO product_categories (name, description, department)" +
