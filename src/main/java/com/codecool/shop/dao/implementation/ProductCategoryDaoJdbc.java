@@ -107,14 +107,4 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
         }
         return DATA;
     }
-
-    private void executeQuery(String query) {
-        try (Statement statement =connection.createStatement()
-        ){
-            statement.execute(query);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
