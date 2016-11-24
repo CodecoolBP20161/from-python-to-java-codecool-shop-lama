@@ -61,9 +61,7 @@ public class ProductCategoryDaoTest {
         productCategory2 = new ProductCategory("test2", "test2", "test2");
 
         if (testConnection != null) {
-//            connection.setAutoCommit(false);
-//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
-            setupTables();
+            deleteTableRows();
 
         }
     }
@@ -133,13 +131,11 @@ public class ProductCategoryDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (testConnection != null) {
-            setupTables();
-//            connection.rollback();
-//            connection.close();
+            deleteTableRows();
         }
     }
 
-    private void setupTables() {
+    private void deleteTableRows() {
         try {
             Statement statement = testConnection.createStatement();
             statement.execute("DELETE FROM products;");

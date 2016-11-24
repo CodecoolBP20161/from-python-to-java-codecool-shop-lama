@@ -66,9 +66,9 @@ public class ProductDaoTest {
         product2 = new Product("test2", 2.0f, "HUF", "test2", productCategory2, supplier2, "test2");
 
         if (testConnection != null) {
-//            connection.setAutoCommit(false);
-//            when(databaseConnectionMock.getConnection()).thenReturn(connection);
-            setupTables();
+            deleteTableRows();
+            insertNecessarySuppliers();
+            insertNecessaryCategories();
         }
     }
 
@@ -199,13 +199,11 @@ public class ProductDaoTest {
     public void tearDown() throws Exception {
         implementation.getAll().clear();
         if (testConnection != null) {
-            setupTables();
-//            connection.rollback();
-//            connection.close();
+            deleteTableRows();
         }
     }
 
-    private void setupTables() {
+    private void deleteTableRows() {
         try {
             Statement statement = testConnection.createStatement();
             statement.execute("DELETE FROM products;");
@@ -214,8 +212,6 @@ public class ProductDaoTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        insertNecessarySuppliers();
-        insertNecessaryCategories();
     }
 
     private void insertNecessarySuppliers() {
