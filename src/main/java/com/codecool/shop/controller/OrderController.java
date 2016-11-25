@@ -7,15 +7,13 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by cave on 2016.11.10..
- */
 public class OrderController {
 
-    public static void addProductToCart(Request req) {
+    public static void addProductToCart(Request req) throws SQLException {
         // available session check
         makeSessionOrderIfNecessary(req);
         Order userOrder = req.session().attribute("userOrder");
