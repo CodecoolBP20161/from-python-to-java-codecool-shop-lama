@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.CheckoutProcess;
 import com.codecool.shop.order.implementation.Order;
 import spark.ModelAndView;
