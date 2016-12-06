@@ -26,3 +26,41 @@ CREATE TABLE products
   supplier INTEGER REFERENCES suppliers(id),
   imageSource VARCHAR(250)
 );
+
+CREATE TABLE order
+(
+  id SERIAL PRIMARY KEY,
+  timestamp TIMESTAMP,
+  status VARCHAR(20),
+  billing_address INTEGER REFERENCES address(id),
+  shipping_address INTEGER REFERENCES address(id),
+  customer INTEGER REFERENCES customer(id)
+);
+
+CREATE TABLE order_product_connection
+(
+  id SERIAL PRIMARY KEY,
+  order INTEGER REFERENCES order(id),
+  product INTEGER REFERENCES products(id),
+  quantity INTEGER
+);
+
+CREATE TABLE customer
+(
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  email VARCHAR(255),
+  phone_number VARCHAR(255),
+  billing_address INTEGER REFERENCES address(id),
+  shipping_address INTEGER REFERENCES address(id)
+);
+
+CREATE TABLE address
+(
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(100),
+  city VARCHAR(100),
+  zip_code VARCHAR(20),
+  address VARCHAR(255)
+);
