@@ -13,18 +13,18 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Order implements Orderable {
 
-    private String id;
+    private int id;
     private ArrayList<LineItem> itemsToOrder;
     private Status status;
     private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
-        this.id = UUID.randomUUID().toString();
+
+
         this.status = Status.NEW;
     }
 
@@ -113,7 +113,21 @@ public class Order implements Orderable {
         return status;
     }
 
-    public String getID() {
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public int getID() {
         return id;
     }
 }
