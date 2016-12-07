@@ -75,4 +75,10 @@ public class OrderController {
         order.removeItem(req.queryParams("id"));
         orderDao.removeProductFromOrder(order, Integer.parseInt(req.queryParams("id")));
     }
+
+    public static void changeQuantity(Request req, Response res, int changeBy) {
+        Order order = req.session().attribute("userOrder");
+        order.changeQuantity(req.queryParams("id"), changeBy);
+        orderDao.changeQuantity(order, Integer.parseInt(req.queryParams("id")), changeBy);
+    }
 }

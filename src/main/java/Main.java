@@ -29,14 +29,14 @@ public class Main {
         });
 
         // modify quantities
-        post("/remove", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), -1);
+        post("/remove_one_item", (req, res) -> {
+            OrderController.changeQuantity(req, res, -1);
             res.redirect("/cart");
             return null;
         });
 
-        post("/add_item", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), 1);
+        post("/add_one_item", (req, res) -> {
+            OrderController.changeQuantity(req, res, 1);
             res.redirect("/cart");
             return null;
         });

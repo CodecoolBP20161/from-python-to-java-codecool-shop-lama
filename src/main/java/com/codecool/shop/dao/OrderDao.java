@@ -17,6 +17,5 @@ public interface OrderDao {
     void updateCustomer(Customer customer, Order order);
     Order find(String orderUUID);
     void removeProductFromOrder(Order order, int productId);
-    void increaseQuantityByOne(Order order, int productId);
-    void decreaseQuantityByOne(Order order, int productId);
+    void changeQuantity(Order order, int productId, int changeBy);
 }

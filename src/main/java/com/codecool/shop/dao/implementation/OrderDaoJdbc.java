@@ -149,7 +149,6 @@ public class OrderDaoJdbc implements OrderDao{
 
     @Override
     public void removeProductFromOrder(Order order, int productId) {
-        System.out.println(order.getID() + "  " + productId);
         try (PreparedStatement preparedStatement = databaseConnection
                 .prepareStatement("DELETE FROM order_product_connection WHERE order_id = ? AND product_id = ?;")){
             preparedStatement.setInt(1, order.getID());
@@ -161,22 +160,13 @@ public class OrderDaoJdbc implements OrderDao{
     }
 
     @Override
-    public void increaseQuantityByOne(Order order, int productId) {
+    public void changeQuantity(Order order, int productId, int changeBy) {
         try (PreparedStatement preparedStatement = databaseConnection
-                .prepareStatement("UPDATE order_product_connection SET quantity = quantity + 1 WHERE (order_id = ? AND product_id = ?);")){
-            preparedStatement.setInt(1, order.getID());
-            preparedStatement.setInt(2, productId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void decreaseQuantityByOne(Order order, int productId) {
-        try (PreparedStatement preparedStatement = databaseConnection
-                .prepareStatement("UPDATE order_product_connection SET quantity = quantity - 1 WHERE (order_id = ? AND product_id = ?);")){
-            preparedStatement.setInt(1, order.getID());
-            preparedStatement.setInt(2, productId);
+                .prepareStatement("UPDATE order_product_connection SET quantity = quantity + ? WHERE (order_id = ? AND product_id = ?);")){
+            preparedStatement.setInt(1, changeBy);
+            preparedStatement.setInt(2, order.getID());
+            preparedStatement.setInt(3, productId);
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
