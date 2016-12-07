@@ -13,4 +13,20 @@ $(document).ready(function () {
         });
     });
 
+    var LogInModal = document.getElementById('LogIn');
+    var LogInbtn = document.getElementById("LogInBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    LogInbtn.onclick = function() {
+        LogInModal.style.display = "block";
+    }
+    span.onclick = function() {
+        LogInModal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == LogInModal) {
+            LogInModal.style.display = "none";
+        }
+    }
+
 });
