@@ -6,6 +6,7 @@ public class Customer {
     private String phoneNumber;
     private Address billingAddress;
     private Address shippingAddress;
+    private int id;
 
     public Customer(String name, String email, String phoneNumber,
                     String billingCountry, String billinCity, String billingZipcode, String billingAddress,
@@ -17,4 +18,7 @@ public class Customer {
         this.shippingAddress = new Address(shippingCountry, shippingCity, shippingZipcode, shippingAddress);
     }
 
+    public int getId() {
+        return id;
+    }
 }

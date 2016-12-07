@@ -30,6 +30,7 @@ CREATE TABLE products
 CREATE TABLE address
 (
   id SERIAL PRIMARY KEY,
+  address_uuid VARCHAR(255),
   country VARCHAR(100),
   city VARCHAR(100),
   zip_code VARCHAR(20),
@@ -39,6 +40,7 @@ CREATE TABLE address
 CREATE TABLE customer
 (
   id SERIAL PRIMARY KEY,
+  customer__uuid VARCHAR(255),
   first_name VARCHAR(100),
   last_name VARCHAR(100),
   email VARCHAR(255),
@@ -50,6 +52,7 @@ CREATE TABLE customer
 CREATE TABLE orders
 (
   id SERIAL PRIMARY KEY,
+  order_uuid VARCHAR(255),
   timestamp TIMESTAMP,
   status VARCHAR(20),
   billing_address INTEGER REFERENCES address(id),

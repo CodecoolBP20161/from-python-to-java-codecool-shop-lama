@@ -42,7 +42,7 @@ public class Main {
         });
 
         post("/remove_all", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).removeItem(req.queryParams("id"));
+            OrderController.removeProductFromOrder(req, res);
             res.redirect("/cart");
             return null;
         });
