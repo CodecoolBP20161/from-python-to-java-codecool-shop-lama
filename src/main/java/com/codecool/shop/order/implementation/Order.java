@@ -3,17 +3,14 @@ package com.codecool.shop.order.implementation;
 import com.codecool.shop.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.model.Product;
+import com.codecool.shop.dao.implementation.Status;
 import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.order.Orderable;
-import jdk.nashorn.internal.ir.RuntimeNode;
-import spark.Request;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,13 +19,13 @@ public class Order implements Orderable {
 
     private String id;
     private ArrayList<LineItem> itemsToOrder;
-    private String status;
+    private Status status;
     private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
         this.id = UUID.randomUUID().toString();
-        this.status = "new";
+        this.status = Status.NEW;
     }
 
     public Order() {
@@ -100,7 +97,7 @@ public class Order implements Orderable {
 
     @Override
     public void checkout() {
-        if (Objects.equals(status, "new")) status = "checked";
+        if (Objects.equals(status, Status.NEW)) status = Status.CHECKED;
     }
 
     @Override
@@ -112,7 +109,11 @@ public class Order implements Orderable {
         return customer;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
+    }
+
+    public String getID() {
+        return id;
     }
 }
