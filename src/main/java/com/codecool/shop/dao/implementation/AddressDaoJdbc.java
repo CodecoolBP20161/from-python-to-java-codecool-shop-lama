@@ -6,6 +6,7 @@ import com.codecool.shop.model.customer.Address;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -44,20 +45,25 @@ public class AddressDaoJdbc implements AddressDao {
     }
 
     @Override
-    public void saveAddress(Address address){
-        String sql = "INSERT INTO products (country, city, zipcode, address) ";
-        String values = "VALUES (?, ?, ?, ?)";
+    public int saveAddress(Address address){
+        String sql = "INSERT INTO address (country, city, zip_code, address) ";
+        String values = "VALUES (?, ?, ?, ?) returning id";
         try {
             PreparedStatement prepStmnt = databaseConnection.prepareStatement(sql + values);
             prepStmnt.setString(1, address.getCountry());
-            prepStmnt.setString(1, address.getCity());
-            prepStmnt.setString(1, address.getZipcode());
-            prepStmnt.setString(1, address.getAddress());
+            prepStmnt.setString(2, address.getCity());
+            prepStmnt.setString(3, address.getZipcode());
+            prepStmnt.setString(4, address.getAddress());
             prepStmnt.execute();
+            ResultSet lastAddedAddress = prepStmnt.getResultSet();
+            while (lastAddedAddress.next()){
+                return lastAddedAddress.getInt("id");
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     private int findAddressID(Address address){

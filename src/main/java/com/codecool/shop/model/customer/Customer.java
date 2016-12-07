@@ -1,7 +1,5 @@
 package com.codecool.shop.model.customer;
 
-import sun.security.util.Password;
-
 import java.util.UUID;
 
 public class Customer {
@@ -51,15 +49,19 @@ public class Customer {
         return id;
     }
 
-    public int getBillingAddressID() { return billingAddress.getId(); }
-    public int getShippingAddressID() { return shippingAddress.getId(); }
-
-
     public String getCustomerUUID() {
         return customerUUID;
     }
 
     public void setCustomerUUID(String customerUUID) {
         this.customerUUID = customerUUID;
+    }
+
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 }

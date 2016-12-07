@@ -1,8 +1,8 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.AddressDao;
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.model.DatabaseConnection;
-import com.codecool.shop.model.Supplier;
 import com.codecool.shop.model.customer.Customer;
 
 import java.sql.*;
@@ -45,13 +45,22 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void add(Customer customer) {
+
+        AddressDao addressDao = AddressDaoJdbc.getInstance();
+        int billingAddressId = addressDao.saveAddress(customer.getBillingAddress());
+        int shippingAddressId = addressDao.saveAddress(customer.getShippingAddress());
+
+
         try {
             PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("INSERT INTO customer (name, email, phone_number, customer_uuid) VALUES (?, ?, ?, ?);");
+                    .prepareStatement("INSERT INTO customer (name, email, phone_number, customer_uuid," +
+                            " billing_address, shipping_address) VALUES (?, ?, ?, ?, ?, ?);");
             preparedStatement.setString(1, customer.getName());
             preparedStatement.setString(2, customer.getEmail());
             preparedStatement.setString(3, customer.getPhoneNumber());
             preparedStatement.setString(4, customer.getCustomerUUID());
+            preparedStatement.setInt(5, billingAddressId);
+            preparedStatement.setInt(6, shippingAddressId);
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
