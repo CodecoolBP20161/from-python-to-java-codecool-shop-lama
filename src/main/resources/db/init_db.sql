@@ -64,3 +64,12 @@ CREATE TABLE address
   zip_code VARCHAR(20),
   address VARCHAR(255)
 );
+
+CREATE TABLE users
+(
+  id SERIAL PRIMARY KEY,
+  user_name VARCHAR(100) UNIQUE,
+  email VARCHAR(100) UNIQUE,
+  salt VARCHAR(100),
+  password_hash VARCHAR(255)
+);
