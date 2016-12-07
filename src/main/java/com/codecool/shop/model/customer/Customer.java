@@ -51,6 +51,10 @@ public class Customer {
         return id;
     }
 
+    public int getBillingAddressID() { return billingAddress.getId(); }
+    public int getShippingAddressID() { return shippingAddress.getId(); }
+
+
     public String getCustomerUUID() {
         return customerUUID;
     }
