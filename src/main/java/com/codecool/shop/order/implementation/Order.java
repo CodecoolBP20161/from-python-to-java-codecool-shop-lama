@@ -20,14 +20,13 @@ import java.util.UUID;
 
 public class Order implements Orderable {
 
-    private String id;
+    private int id;
     private ArrayList<LineItem> itemsToOrder;
     private String status;
     private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
-        this.id = UUID.randomUUID().toString();
         this.status = "new";
     }
 
@@ -114,5 +113,17 @@ public class Order implements Orderable {
 
     public String getStatus() {
         return status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
