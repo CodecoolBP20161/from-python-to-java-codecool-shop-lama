@@ -21,4 +21,20 @@ public class Address {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
 }
