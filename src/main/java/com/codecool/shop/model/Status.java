@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.model;
 
 /**
  * Created by annakertesz on 12/7/16.

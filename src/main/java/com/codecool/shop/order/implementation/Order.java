@@ -3,7 +3,7 @@ package com.codecool.shop.order.implementation;
 import com.codecool.shop.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.Status;
+import com.codecool.shop.model.Status;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.order.Orderable;
@@ -13,19 +13,20 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Order implements Orderable {
 
     private int id;
+    private String orderUUID;
     private ArrayList<LineItem> itemsToOrder;
     private Status status;
     private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
-
-
         this.status = Status.NEW;
+        this.orderUUID = UUID.randomUUID().toString();
     }
 
     public Order() {
@@ -113,7 +114,13 @@ public class Order implements Orderable {
         return status;
     }
 
+    public String getOrderUUID() {
+        return orderUUID;
+    }
 
+    public int getID() {
+        return id;
+    }
 
     public int getId() {
         return id;
@@ -127,7 +134,7 @@ public class Order implements Orderable {
         this.status = status;
     }
 
-    public int getID() {
-        return id;
+    public void setOrderUUID(String orderUUID) {
+        this.orderUUID = orderUUID;
     }
 }
