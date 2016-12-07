@@ -1,8 +1,8 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.customer.Address;
+import com.codecool.shop.model.customer.Address;
 import com.codecool.shop.model.Product;
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 
 /**

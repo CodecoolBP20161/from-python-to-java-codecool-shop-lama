@@ -1,11 +1,10 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.OrderDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.order.CheckoutProcess;
 import com.codecool.shop.order.implementation.Order;
 import spark.ModelAndView;
@@ -34,18 +33,10 @@ public class OrderController {
         CheckoutProcess checkoutProcess = new CheckoutProcess();
         Order order = req.session().attribute("userOrder");
         if (order == null) return false;
-        order.setCustomer(makeNewCustomer(req));
+        order.setCustomer(CustomerController.makeNewCustomer(req));
         checkoutProcess.action(order);
         orderDao.updateStatus(order);
         return true;
-    }
-
-    private static Customer makeNewCustomer(Request req) {
-        return new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
-                req.queryParams("billingCountry"), req.queryParams("billingCity"),
-                req.queryParams("billingZipcode"), req.queryParams("billingAddress"),
-                req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
-                req.queryParams("shippingZipcode"), req.queryParams("shippingAddress"));
     }
 
     // rendering cart.html template
