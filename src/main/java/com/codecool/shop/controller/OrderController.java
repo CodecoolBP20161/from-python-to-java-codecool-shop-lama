@@ -1,5 +1,7 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.CustomerDao;
+import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductDao;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 public class OrderController {
     private static OrderDao orderDao = OrderDaoJdbc.getInstance();
+    private static CustomerDao customerDao = CustomerDaoJdbc.getInstance();
     private static ProductDao productDao = ProductDaoJdbc.getInstance();
 
     public static void addProductToCart(Request req) throws SQLException {
@@ -33,9 +36,12 @@ public class OrderController {
         CheckoutProcess checkoutProcess = new CheckoutProcess();
         Order order = req.session().attribute("userOrder");
         if (order == null) return false;
-        order.setCustomer(CustomerController.makeNewCustomer(req));
+        Customer customer = CustomerController.makeNewCustomer(req);
+        order.setCustomer(customer);
+        customerDao.add(customer);
         checkoutProcess.action(order);
         orderDao.updateStatus(order);
+        orderDao.updateCustomer(customerDao.find(customer.getCustomerUUID()), order);
         return true;
     }
 

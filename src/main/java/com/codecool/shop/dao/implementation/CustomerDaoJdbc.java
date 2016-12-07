@@ -47,10 +47,11 @@ public class CustomerDaoJdbc implements CustomerDao {
     public void add(Customer customer) {
         try {
             PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("INSERT INTO customer (name, email, phone_number) VALUES (?, ?, ?);");
+                    .prepareStatement("INSERT INTO customer (name, email, phone_number, customer_uuid) VALUES (?, ?, ?, ?);");
             preparedStatement.setString(1, customer.getName());
             preparedStatement.setString(2, customer.getEmail());
             preparedStatement.setString(3, customer.getPhoneNumber());
+            preparedStatement.setString(4, customer.getCustomerUUID());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,6 +68,26 @@ public class CustomerDaoJdbc implements CustomerDao {
             while (resultSet.next()){
                 Customer customer = new Customer(resultSet.getString("name"),
                         resultSet.getString("email"), resultSet.getString("phoneNumber"));
+                customer.setId(resultSet.getInt("id"));
+                customer.setCustomerUUID(resultSet.getString("customer_uuid"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Customer find(String customerUUID) {
+        try {
+            PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("SELECT * FROM customer WHERE customer_uuid = ?;");
+            preparedStatement.setString(1, customerUUID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Customer customer = new Customer(resultSet.getString("name"),
+                        resultSet.getString("email"), resultSet.getString("phone_number"));
                 customer.setId(resultSet.getInt("id"));
                 return customer;
             }

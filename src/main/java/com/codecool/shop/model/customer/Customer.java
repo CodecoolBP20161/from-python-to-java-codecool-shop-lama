@@ -2,8 +2,11 @@ package com.codecool.shop.model.customer;
 
 import sun.security.util.Password;
 
+import java.util.UUID;
+
 public class Customer {
     private int id;
+    private String customerUUID;
     private String name;
     private String email;
     private String phoneNumber;
@@ -19,6 +22,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.billingAddress = new Address(billingCountry, billingCity, billingZipcode, billingAddress);
         this.shippingAddress = new Address(shippingCountry, shippingCity, shippingZipcode, shippingAddress);
+        this.customerUUID = UUID.randomUUID().toString();
     }
 
     public Customer(String name, String email, String phoneNumber){
@@ -45,5 +49,13 @@ public class Customer {
 
     public int getId() {
         return id;
+    }
+
+    public String getCustomerUUID() {
+        return customerUUID;
+    }
+
+    public void setCustomerUUID(String customerUUID) {
+        this.customerUUID = customerUUID;
     }
 }
