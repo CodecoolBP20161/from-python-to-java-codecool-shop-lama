@@ -1,6 +1,6 @@
 package com.codecool.shop.order.implementation;
 
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
 import com.codecool.shop.model.Status;

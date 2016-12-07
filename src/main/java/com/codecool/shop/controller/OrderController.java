@@ -1,11 +1,12 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.dao.CustomerDao;
+import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.OrderDaoJdbc;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.order.CheckoutProcess;
 import com.codecool.shop.order.implementation.Order;
 import spark.ModelAndView;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 public class OrderController {
     private static OrderDao orderDao = OrderDaoJdbc.getInstance();
+    private static CustomerDao customerDao = CustomerDaoJdbc.getInstance();
     private static ProductDao productDao = ProductDaoJdbc.getInstance();
 
     public static void addProductToCart(Request req) throws SQLException {
@@ -34,18 +36,13 @@ public class OrderController {
         CheckoutProcess checkoutProcess = new CheckoutProcess();
         Order order = req.session().attribute("userOrder");
         if (order == null) return false;
-        order.setCustomer(makeNewCustomer(req));
+        Customer customer = CustomerController.makeNewCustomer(req);
+        order.setCustomer(customer);
+        customerDao.add(customer);
         checkoutProcess.action(order);
         orderDao.updateStatus(order);
+        orderDao.updateCustomer(customerDao.find(customer.getCustomerUUID()), order);
         return true;
-    }
-
-    private static Customer makeNewCustomer(Request req) {
-        return new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"),
-                req.queryParams("billingCountry"), req.queryParams("billingCity"),
-                req.queryParams("billingZipcode"), req.queryParams("billingAddress"),
-                req.queryParams("shippingCountry"), req.queryParams("shippingCity"),
-                req.queryParams("shippingZipcode"), req.queryParams("shippingAddress"));
     }
 
     // rendering cart.html template

@@ -40,9 +40,8 @@ CREATE TABLE address
 CREATE TABLE customer
 (
   id SERIAL PRIMARY KEY,
-  customer__uuid VARCHAR(255),
-  first_name VARCHAR(100),
-  last_name VARCHAR(100),
+  customer_uuid VARCHAR(255),
+  name VARCHAR(100),
   email VARCHAR(255),
   phone_number VARCHAR(255),
   billing_address INTEGER REFERENCES address(id),

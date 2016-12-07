@@ -1,4 +1,4 @@
-package com.codecool.shop.customer;
+package com.codecool.shop.model.customer;
 
 public class Address {
     private String country;
