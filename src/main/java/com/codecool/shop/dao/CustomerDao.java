@@ -11,6 +11,7 @@ import java.util.List;
 public interface CustomerDao {
     void add(Customer customer);
     Customer find(int id);
+    Customer find(String customerUUID);
     void remove(int id);
 
     List<Customer> getAll();

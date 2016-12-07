@@ -1,11 +1,14 @@
 package com.codecool.shop.order.implementation;
 
-import com.codecool.shop.model.customer.Customer;
+import com.codecool.shop.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
+import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.order.Orderable;
+import jdk.nashorn.internal.ir.RuntimeNode;
+import spark.Request;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
