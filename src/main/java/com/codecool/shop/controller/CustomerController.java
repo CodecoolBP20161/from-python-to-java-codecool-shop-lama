@@ -73,7 +73,6 @@ public class CustomerController {
                 CustomerDao customerDao = CustomerDaoJdbc.getInstance();
                 Customer customer = customerDao.find(customerDao.getCustomerId(userName));
                 request.session().attribute("logged-in-user", customer);
-                System.out.println(request.session().attribute("logged-in-user").toString());
                 return true;
             }
         } catch (URISyntaxException e) {
