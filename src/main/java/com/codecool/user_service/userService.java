@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static spark.Spark.exception;
-import static spark.Spark.get;
-import static spark.Spark.port;
+import static spark.Spark.*;
 
 /**
  * Created by leviathan on 2016.12.07..

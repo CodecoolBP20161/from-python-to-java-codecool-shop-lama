@@ -1,34 +1,32 @@
 package com.codecool.shop.order.implementation;
 
-import com.codecool.shop.customer.Customer;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.model.Product;
+import com.codecool.shop.model.Status;
 import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.order.Orderable;
-import jdk.nashorn.internal.ir.RuntimeNode;
-import spark.Request;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Order implements Orderable {
 
-    private String id;
+    private int id;
+    private String orderUUID;
     private ArrayList<LineItem> itemsToOrder;
-    private String status;
+    private Status status;
     private Customer customer;
 
     {
         itemsToOrder = new ArrayList<>();
-        this.id = UUID.randomUUID().toString();
-        this.status = "new";
+        this.status = Status.NEW;
+        this.orderUUID = UUID.randomUUID().toString();
     }
 
     public Order() {
@@ -100,7 +98,7 @@ public class Order implements Orderable {
 
     @Override
     public void checkout() {
-        if (Objects.equals(status, "new")) status = "checked";
+        if (Objects.equals(status, Status.NEW)) status = Status.CHECKED;
     }
 
     @Override
@@ -112,7 +110,31 @@ public class Order implements Orderable {
         return customer;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
+    }
+
+    public String getOrderUUID() {
+        return orderUUID;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setOrderUUID(String orderUUID) {
+        this.orderUUID = orderUUID;
     }
 }

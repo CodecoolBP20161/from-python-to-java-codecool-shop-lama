@@ -27,6 +27,27 @@ CREATE TABLE products
   imageSource VARCHAR(250)
 );
 
+CREATE TABLE address
+(
+  id SERIAL PRIMARY KEY,
+  address_uuid VARCHAR(255),
+  country VARCHAR(100),
+  city VARCHAR(100),
+  zip_code VARCHAR(20),
+  address VARCHAR(255)
+);
+
+CREATE TABLE customer
+(
+  id SERIAL PRIMARY KEY,
+  customer_uuid VARCHAR(255),
+  name VARCHAR(100),
+  email VARCHAR(255),
+  phone_number VARCHAR(255),
+  billing_address INTEGER REFERENCES address(id),
+  shipping_address INTEGER REFERENCES address(id)
+);
+
 CREATE TABLE orders
 (
   id SERIAL PRIMARY KEY,
@@ -46,32 +67,12 @@ CREATE TABLE order_product_connection
   quantity INTEGER
 );
 
-CREATE TABLE customer
-(
-  id SERIAL PRIMARY KEY,
-  customer_uuid VARCHAR(255),
-  name VARCHAR(100),
-  email VARCHAR(255),
-  phone_number VARCHAR(255),
-  billing_address INTEGER REFERENCES address(id),
-  shipping_address INTEGER REFERENCES address(id)
-);
-
-CREATE TABLE address
-(
-  id SERIAL PRIMARY KEY,
-  address_uuid VARCHAR(255),
-  country VARCHAR(100),
-  city VARCHAR(100),
-  zip_code VARCHAR(20),
-  address VARCHAR(255)
-);
-
 CREATE TABLE users
 (
   id SERIAL PRIMARY KEY,
   user_name VARCHAR(100) UNIQUE,
   email VARCHAR(100) UNIQUE,
   salt VARCHAR(100),
-  password_hash VARCHAR(255)
+  password_hash VARCHAR(255),
+  customer_id INTEGER REFERENCES customer(id)
 );

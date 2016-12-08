@@ -1,6 +1,9 @@
+import com.codecool.shop.controller.CustomerController;
 import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.controller.DbPopulator;
+import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
@@ -22,6 +25,8 @@ public class Main {
         get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
 
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
+
+        get("/registration", CustomerController::renderRegistration, new ThymeleafTemplateEngine());
 
         post("/add", (request, response) -> {
             OrderController.addProductToCart(request);
@@ -47,6 +52,12 @@ public class Main {
             return null;
         });
 
+        post("/register", (req, res) -> {
+            CustomerController.registration(req);
+            res.redirect("/");
+            return null;
+        });
+
         // checkout methods
         get("/checkout", OrderController::renderCheckout, new ThymeleafTemplateEngine());
 
@@ -59,6 +70,15 @@ public class Main {
         });
 
         get("/payment", (req, res) -> "payment");
+
+        get("/api/checkemail", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkEmail(request.queryParams("email"));
+        });
+        get("/api/checkuser", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkUserName(request.queryParams("user_name"));
+        });
 
     }
 

@@ -29,19 +29,22 @@
 <body>
 <div class="container">
     <div class="col-md-10 bordering">
-        <form class="form-horizontal" method="post" action="/checkout/submit">
+        <form class="form-horizontal" method="post" action="/register">
             <h3>Personal informations</h3>
             <div class="form-group">
-                <input required="true" type="text" placeholder="UserName" class="form-control" name="userName"/>
+                <input required="true" type="text" placeholder="Name" class="form-control" name="name"/>
+            </div>
+            <div class="form-group">
+                <input required="true" type="text" placeholder="UserName" class="form-control" name="userName" oninput="checkUser(this)"/>
             </div>
             <div class="form-group">
                 <input required="true" type="password" placeholder="Password" class="form-control" name="password" id="password"/>
             </div>
             <div class="form-group">
-                <input required="true" type="password" placeholder="Password confirmation" class="form-control" name="passwordConfirmation" oninput="check(this)"/>
+                <input required="true" type="password" placeholder="Password confirmation" class="form-control" name="passwordConfirmation" oninput="checkPW(this)"/>
             </div>
             <div class="form-group">
-                <input required="true" type="email" placeholder="Email (example@example.com)" class="form-control" name="email"/>
+                <input required="true" type="email" placeholder="Email (example@example.com)" class="form-control" name="email" oninput="checkEmail(this)"/>
             </div>
             <div class="form-group">
                 <input required="true" type="tel" placeholder="Phone Number" class="form-control" name="phone"/>
@@ -52,13 +55,42 @@
 </div>
 </body>
 <script language='javascript' type='text/javascript'>
-    function check(input) {
+    function checkPW(input) {
         if (input.value != document.getElementById('password').value) {
             input.setCustomValidity('Password Must be Matching.');
         } else {
             // input is valid -- reset the error message
             input.setCustomValidity('');
         }
+    }
+
+    function checkEmail(input) {
+        $.get("/api/checkemail", {email:input.value}).done(function (resp) {
+            console.log(resp);
+            if (!resp){
+                input.setCustomValidity('Email is already in use');
+            } else {
+                // input is valid -- reset the error message
+                input.setCustomValidity('');
+            }
+        })
+    }
+
+    function checkUser(input) {
+        $.ajax({
+            url : "/api/checkuser",
+            type : "get",
+            async: false,
+            data: {user_name:input.value},
+            success : function(resp) {
+                console.log(resp);
+                if (!resp){
+                    input.setCustomValidity('UserName is already in use');
+                } else {
+                    input.setCustomValidity('');
+                }
+            }
+        });
     }
 </script>
 </html>
