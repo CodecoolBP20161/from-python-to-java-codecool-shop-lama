@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -14,17 +15,17 @@ import java.util.Properties;
 /**
  * Created by prezi on 2016. 12. 08..
  */
-public class SendEmail {
+public class EmailSender {
     private static SMTPConnection smtp;
-    private static SendEmail INSTANCE;
+    private static EmailSender INSTANCE;
 
-    private SendEmail(){
+    private EmailSender(){
         smtp = SMTPConnection.getInstance();
     }
 
-    public static SendEmail getInstance(){
+    public static EmailSender getInstance(){
         if (INSTANCE == null) {
-            INSTANCE = new SendEmail();
+            INSTANCE = new EmailSender();
         }
         return INSTANCE;
     }
@@ -45,24 +46,19 @@ public class SendEmail {
         return session;
     }
 
-    public void sendRegistrationEmail(Customer customer){
+    public void sendRegistrationEmail(Customer customer) throws MessagingException {
         Session session = makeSession();
 
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(smtp.getUser()));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(customer.getEmail()));
-            message.setSubject("Registration");
-            message.setText("Dear " + customer.getName() + ","
-                    + "\n\n Welcome to our shop."
-                    + "\n Your Unique Identification number is " + customer.getCustomerUUID()
-                    + "\n Your billing address is " + customer.getBillingAddress()
-                    + "\n Your phone number is " + customer.getPhoneNumber());
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(smtp.getUser()));
+        message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(customer.getEmail()));
+        message.setSubject("Registration");
+        message.setText("Dear " + customer.getName() + ","
+                + "\n\n Welcome to our shop."
+                + "\n Your Unique Identification number is " + customer.getCustomerUUID()
+                + "\n Your phone number is " + customer.getPhoneNumber());
 
-            Transport.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        Transport.send(message);
     }
 }

@@ -59,5 +59,13 @@
             <artifactId>postgresql</artifactId>
             <version>9.4.1212.jre7</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
     </dependencies>
 </project>

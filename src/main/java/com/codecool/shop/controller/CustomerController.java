@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.dao.CustomerDao;
 import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
+import com.codecool.shop.email.EmailSender;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.util.passwordHasher;
 import spark.ModelAndView;
@@ -9,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import sun.security.util.Password;
 
+import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,10 +36,22 @@ public class CustomerController {
         String salt = passwordHasher.generateSalt();
         String password = passwordHasher.sha256(salt + req.queryParams("password"));
         customerDao.addUser(req.queryParams("userName"), req.queryParams("email"), salt, password, customerDao.find(customer.getCustomerUUID()).getId());
+        sendMail(customer);
     }
 
     public static ModelAndView renderRegistration(Request req, Response res) {
         Map params = new HashMap<>();
         return new ModelAndView(params, "product/registration");
+    }
+
+    private static String sendMail(Customer customer) {
+        EmailSender emailSender = EmailSender.getInstance();
+
+        try {
+            emailSender.sendRegistrationEmail(customer);
+        } catch (MessagingException e) {
+            return "Email sending has failed";
+        }
+        return "Email sending was successful";
     }
 }
