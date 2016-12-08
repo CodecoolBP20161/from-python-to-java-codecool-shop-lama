@@ -1,6 +1,5 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.customer.Customer;
 
 import java.util.List;
@@ -13,6 +12,8 @@ public interface CustomerDao {
     Customer find(int id);
     Customer find(String customerUUID);
     void remove(int id);
+    public int getBillingAddressId(String uuid);
+    public int getShippingAddressId(String uuid);
 
     List<Customer> getAll();
 
