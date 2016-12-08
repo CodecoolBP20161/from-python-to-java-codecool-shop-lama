@@ -1,11 +1,10 @@
 package com.codecool.shop.dao.implementation;
 
-import com.codecool.shop.model.customer.Address;
-import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.Status;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 
 import java.sql.*;
@@ -79,23 +78,26 @@ public class OrderDaoJdbc implements OrderDao{
         }
     }
 
-    @Override
-    public void updateShippingAddress(Address address, Order order) {
-        try(PreparedStatement preparedStatement = databaseConnection
-                .prepareStatement("UPDATE orders SET shipping_address = ? WHERE id = ?;")) {
-            preparedStatement.setInt(1, address.getId());
-            preparedStatement.setInt(2, order.getId());
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
+
+    //TODO
     @Override
-    public void updateBillingAddress(Address address, Order order) {
+    public void updateShippingAddress(int addressId, Order order) {
+            try(PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("UPDATE orders SET shipping_address = ? WHERE id = ?;")) {
+                preparedStatement.setInt(1, addressId);
+                preparedStatement.setInt(2, order.getId());
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
+//TODO
+    @Override
+    public void updateBillingAddress(int addressId, Order order) {
         try(PreparedStatement preparedStatement = databaseConnection
                 .prepareStatement("UPDATE orders SET billing_address = ? WHERE id = ?;")) {
-            preparedStatement.setInt(1, address.getId());
+            preparedStatement.setInt(1, addressId);
             preparedStatement.setInt(2, order.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -126,6 +128,11 @@ public class OrderDaoJdbc implements OrderDao{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateAddress() {
+
     }
 
     @Override
