@@ -54,11 +54,11 @@
                         <div class="row-fluid">
                         <div th:text="*{li.getQuantity()}" class="col-xs-1">quantity</div>
                         <div class="btn-group-vertical col-xs-1">
-                            <form th:method="post" action="/add_item">
+                            <form th:method="post" action="/add_one_item">
                                 <input  type="hidden" name="id" th:value = "*{li.product.getId()}"/>
                                 <input class="btn change" type="submit" value="+"/>
                             </form>
-                            <form th:method="post" action="/remove">
+                            <form th:method="post" action="/remove_one_item">
                                 <input type="hidden" name="id" th:value = "*{li.product.getId()}"/>
                                 <input class="btn change" type="submit" value="-"/>
                             </form>
