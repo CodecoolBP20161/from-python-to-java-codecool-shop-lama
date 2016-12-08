@@ -27,6 +27,7 @@ public class Customer {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.customerUUID = UUID.randomUUID().toString();
     }
 
     public String getName(){

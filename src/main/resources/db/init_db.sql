@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS products, product_categories, customer, suppliers, order_product_connection, orders, address;
+DROP TABLE IF EXISTS products, product_categories, customer, suppliers, order_product_connection, orders, address, users;
 
 CREATE TABLE suppliers
 (
@@ -65,4 +65,14 @@ CREATE TABLE order_product_connection
   order_id INTEGER REFERENCES orders(id),
   product_id INTEGER REFERENCES products(id),
   quantity INTEGER
+);
+
+CREATE TABLE users
+(
+  id SERIAL PRIMARY KEY,
+  user_name VARCHAR(100) UNIQUE,
+  email VARCHAR(100) UNIQUE,
+  salt VARCHAR(100),
+  password_hash VARCHAR(255),
+  customer_id INTEGER REFERENCES customer(id)
 );

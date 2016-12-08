@@ -45,26 +45,34 @@ public class CustomerDaoJdbc implements CustomerDao {
 
     @Override
     public void add(Customer customer) {
-
-        AddressDao addressDao = AddressDaoJdbc.getInstance();
-        int billingAddressId = addressDao.saveAddress(customer.getBillingAddress());
-        int shippingAddressId = addressDao.saveAddress(customer.getShippingAddress());
-
-
         try {
             PreparedStatement preparedStatement = databaseConnection
-                    .prepareStatement("INSERT INTO customer (name, email, phone_number, customer_uuid," +
-                            " billing_address, shipping_address) VALUES (?, ?, ?, ?, ?, ?);");
+                    .prepareStatement("INSERT INTO customer (name, email, phone_number, customer_uuid)" +
+                            " VALUES (?, ?, ?, ?);");
             preparedStatement.setString(1, customer.getName());
             preparedStatement.setString(2, customer.getEmail());
             preparedStatement.setString(3, customer.getPhoneNumber());
             preparedStatement.setString(4, customer.getCustomerUUID());
-            preparedStatement.setInt(5, billingAddressId);
-            preparedStatement.setInt(6, shippingAddressId);
             preparedStatement.execute();
+            if (customer.getBillingAddress()!=null && customer.getShippingAddress()!=null) {
+                addAddresses(customer);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addAddresses(Customer customer) throws SQLException {
+        AddressDao addressDao = AddressDaoJdbc.getInstance();
+        int billingAddressId = addressDao.saveAddress(customer.getBillingAddress());
+        int shippingAddressId = addressDao.saveAddress(customer.getShippingAddress());
+        PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("UPDATE customer SET billing_address = ?, shipping_address = ? WHERE customer_uuid = ? OR id = ?;");
+        preparedStatement.setInt(1, billingAddressId);
+        preparedStatement.setInt(2, shippingAddressId);
+        preparedStatement.setString(3, customer.getCustomerUUID());
+        preparedStatement.setInt(4, customer.getId());
+        preparedStatement.execute();
     }
 
     @Override
@@ -124,7 +132,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         String query = "SELECT * FROM customer;";
         try (Statement statement = databaseConnection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
-        ) {
+        ){
             while (resultSet.next()) {
                 Customer actCustomer = new Customer(resultSet.getString("name"),
                         resultSet.getString("email"), resultSet.getString("phoneNumber"));
@@ -135,6 +143,53 @@ public class CustomerDaoJdbc implements CustomerDao {
             e.printStackTrace();
         }
         return DATA;
+    }
+
+    public void addUser(String userName, String email, String salt, String pwHash, int customer_id){
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("INSERT INTO users (user_name, email, salt, password_hash, customer_id)" +
+                        " VALUES (?, ?, ?, ?, ?);")){
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, salt);
+            preparedStatement.setString(4, pwHash);
+            preparedStatement.setInt(5, customer_id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkUserName(String userName){
+        try {
+
+            PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("SELECT count(*) FROM users WHERE user_name = ?;");
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return (resultSet.getInt(1) == 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean checkEmail(String email){
+        try {
+
+            PreparedStatement preparedStatement = databaseConnection
+                    .prepareStatement("SELECT count(*) FROM users WHERE email = ?;");
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return (resultSet.getInt(1) == 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
