@@ -18,10 +18,13 @@ public class SendEmail {
     private static SMTPConnection smtp;
     private static SendEmail INSTANCE;
 
+    private SendEmail(){
+        smtp = SMTPConnection.getInstance();
+    }
+
     public static SendEmail getInstance(){
         if (INSTANCE == null) {
             INSTANCE = new SendEmail();
-            smtp = SMTPConnection.getInstance();
         }
         return INSTANCE;
     }
