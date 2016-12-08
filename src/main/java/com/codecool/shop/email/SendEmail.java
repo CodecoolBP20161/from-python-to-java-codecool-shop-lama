@@ -56,7 +56,9 @@ public class SendEmail {
             message.setSubject("Registration");
             message.setText("Dear " + customer.getName() + ","
                     + "\n\n Welcome to our shop."
-                    + customer.toString());
+                    + "\n Your Unique Identification number is " + customer.getCustomerUUID()
+                    + "\n Your billing address is " + customer.getBillingAddress()
+                    + "\n Your phone number is " + customer.getPhoneNumber());
 
             Transport.send(message);
         } catch (MessagingException e) {
