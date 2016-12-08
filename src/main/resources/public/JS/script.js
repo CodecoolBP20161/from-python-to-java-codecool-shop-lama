@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    var LogInModal = document.getElementById('log_in_modal');
+    var LogInbtn = document.getElementById("log_in_btn");
+    var span = document.getElementsByClassName("close")[0];
+
+    $("#log_out_btn").hide();
 
     $(".btn_add_to_cart").click(function(){
         var prodId = $(this).data("id");
@@ -13,20 +18,45 @@ $(document).ready(function () {
         });
     });
 
-    var LogInModal = document.getElementById('LogIn');
-    var LogInbtn = document.getElementById("LogInBtn");
-    var span = document.getElementsByClassName("close")[0];
-
     LogInbtn.onclick = function() {
         LogInModal.style.display = "block";
-    }
+    };
     span.onclick = function() {
         LogInModal.style.display = "none";
-    }
+    };
     window.onclick = function(event) {
         if (event.target == LogInModal) {
             LogInModal.style.display = "none";
         }
-    }
+    };
+
+    $("#login_submit_btn").click(loginValidation);
+    $("#log_out_btn").click(logout);
 
 });
+
+function loginValidation() {
+    $.get("/validate-user", {user_name: document.getElementById("input_user_name").value,
+    password: document.getElementById("input_password").value}).done(function (resp) {
+        if (resp === "false"){
+            document.getElementById("input_password").setCustomValidity('Wrong username OR password');
+        } else {
+            // input is valid -- reset the error message
+            document.getElementById("input_password").setCustomValidity('');
+            $("#log_in_modal").hide();
+            $("#log_out_btn").show();
+            $("#log_in_btn").hide();
+
+        }
+    })
+}
+
+function logout() {
+    $.get("/logout-user", {user_name: document.getElementById("input_user_name").value,
+        password: document.getElementById("input_password").value}).done(function (resp) {
+        if (resp === "logged out"){
+            $("#log_out_btn").hide();
+            $("#log_in_btn").show();
+        }
+    })
+}

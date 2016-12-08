@@ -44,7 +44,7 @@
                 <input required="true" type="password" placeholder="Password confirmation" class="form-control" name="passwordConfirmation" oninput="checkPW(this)"/>
             </div>
             <div class="form-group">
-                <input required="true" type="email" placeholder="Email (example@example.com)" class="form-control" name="email" oninput="checkEmail(this)"/>
+                <input required="true" type="emailSender" placeholder="Email (example@example.com)" class="form-control" name="email" oninput="checkEmail(this)"/>
             </div>
             <div class="form-group">
                 <input required="true" type="tel" placeholder="Phone Number" class="form-control" name="phone"/>
@@ -66,13 +66,9 @@
 
     function checkEmail(input) {
         $.get("/api/checkemail", {email:input.value}).done(function (resp) {
-            console.log(resp);
-            console.log(input);
             if (resp === "false"){
-
                 input.setCustomValidity('Email is already in use');
             } else {
-
                 // input is valid -- reset the error message
                 input.setCustomValidity('');
             }

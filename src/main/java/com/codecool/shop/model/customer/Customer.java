@@ -10,7 +10,6 @@ public class Customer {
     private String phoneNumber;
     private Address billingAddress;
     private Address shippingAddress;
-    private boolean logged_in = false;
 
     public Customer(String name, String email, String phoneNumber,
                     String billingCountry, String billingCity, String billingZipcode, String billingAddress,

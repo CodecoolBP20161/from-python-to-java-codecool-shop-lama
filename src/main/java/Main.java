@@ -1,7 +1,4 @@
-import com.codecool.shop.controller.CustomerController;
-import com.codecool.shop.controller.OrderController;
-import com.codecool.shop.controller.ProductController;
-import com.codecool.shop.controller.DbPopulator;
+import com.codecool.shop.controller.*;
 import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
@@ -75,10 +72,18 @@ public class Main {
             CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
             return customerDao.checkEmail(request.queryParams("email"));
         });
+
+        //TODO: place these into a service!
         get("/api/checkuser", (request, response) -> {
             CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
             return customerDao.checkUserName(request.queryParams("user_name"));
         });
+        get("/api/checkuser", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkUserName(request.queryParams("user_name"));
+        });
+        get("/validate-user", CustomerController::loginValidation);
+        get("/logout-user", CustomerController::logout);
 
     }
 
