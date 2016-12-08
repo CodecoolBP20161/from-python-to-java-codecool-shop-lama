@@ -84,7 +84,7 @@ public class CustomerDaoJdbc implements CustomerDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Customer customer = new Customer(resultSet.getString("name"),
-                        resultSet.getString("email"), resultSet.getString("phoneNumber"));
+                        resultSet.getString("email"), resultSet.getString("phone_number"));
                 customer.setId(resultSet.getInt("id"));
                 customer.setCustomerUUID(resultSet.getString("customer_uuid"));
                 return customer;
@@ -135,7 +135,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         ){
             while (resultSet.next()) {
                 Customer actCustomer = new Customer(resultSet.getString("name"),
-                        resultSet.getString("email"), resultSet.getString("phoneNumber"));
+                        resultSet.getString("email"), resultSet.getString("phone_number"));
                 actCustomer.setId(resultSet.getInt("id"));
                 DATA.add(actCustomer);
             }
@@ -225,4 +225,52 @@ public class CustomerDaoJdbc implements CustomerDao {
         }
         return 0;
     }
+
+    public boolean loginValidation(String userName, String saltedPasswordHash) {
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT count(*) FROM users WHERE user_name = ? AND password_hash = ?;")
+        )   {
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, saltedPasswordHash);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return (resultSet.getInt(1) == 1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String getSalt(String userName) {
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT salt FROM users WHERE user_name = ?;")
+        )   {
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCustomerId(String userName) {
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT customer_id FROM users WHERE user_name = ?;")
+        )   {
+            preparedStatement.setString(1, userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }

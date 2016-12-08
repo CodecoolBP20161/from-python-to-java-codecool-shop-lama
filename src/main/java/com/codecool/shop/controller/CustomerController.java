@@ -5,12 +5,17 @@ import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
 import com.codecool.shop.email.EmailSender;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.util.passwordHasher;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import sun.security.util.Password;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +23,8 @@ import java.util.Map;
  * Created by leviathan on 2016.12.07..
  */
 public class CustomerController {
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
     static Customer makeNewCustomer(Request req) {
         if (req.queryParams("billingCountry").equals(null)){
             return new Customer(req.queryParams("name"), req.queryParams("email"), req.queryParams("phone"));
@@ -53,5 +60,27 @@ public class CustomerController {
             return "Email sending has failed";
         }
         return "Email sending was successful";
+    }
+
+    public static boolean loginValidation(Request request, Response response) {
+        String userName = request.queryParams("user_name");
+        String password = request.queryParams("password");
+        logger.debug("user_name: " + userName);
+        try {
+            if (UserServiceController.loginValidation(userName, password).equals("true")) {
+                logger.info("login successful");
+
+                CustomerDao customerDao = CustomerDaoJdbc.getInstance();
+                Customer customer = customerDao.find(customerDao.getCustomerId(userName));
+                request.session().attribute("logged-in-user", customer);
+                System.out.println(request.session().attribute("logged-in-user").toString());
+                return true;
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

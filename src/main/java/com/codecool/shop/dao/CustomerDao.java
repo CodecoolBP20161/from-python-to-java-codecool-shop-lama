@@ -14,6 +14,7 @@ public interface CustomerDao {
     void remove(int id);
     public int getBillingAddressId(String uuid);
     public int getShippingAddressId(String uuid);
+    public int getCustomerId(String userName);
 
     List<Customer> getAll();
 

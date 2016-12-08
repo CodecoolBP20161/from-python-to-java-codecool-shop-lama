@@ -64,7 +64,7 @@
                     </ul>
                 </li>
             </ul>
-            <button class="log" id="LogInBtn">Log in</button>
+            <button class="log" id="log_in_btn">Log in</button>
             <a href="/registration">
                 <div>
                     <button class="log">Registration</button>
@@ -117,13 +117,13 @@
 </div>
 
 <!--LogIn modal-->
-<div id="LogIn" class="modal">
+<div id="log_in_modal" class="modal">
     <div class="modal-content">
         <span class="close">x</span>
-        <form>
-            <input type="text" placeholder="user name"/>
-            <input type="password" placeholder="password"/>
-            <input type="submit" value="log in"/>
+        <form method="get" action="#">
+            <input id="input_user_name" type="text" placeholder="user name"/>
+            <input id="input_password" type="password" placeholder="password"/>
+            <input id="login_submit_btn" type="submit" value="log in"/>
         </form>
     </div>
 </div>
