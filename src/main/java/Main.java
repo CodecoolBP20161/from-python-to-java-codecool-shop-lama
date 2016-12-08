@@ -83,6 +83,7 @@ public class Main {
             return customerDao.checkUserName(request.queryParams("user_name"));
         });
         get("/validate-user", CustomerController::loginValidation);
+        get("/logout-user", CustomerController::logout);
 
     }
 

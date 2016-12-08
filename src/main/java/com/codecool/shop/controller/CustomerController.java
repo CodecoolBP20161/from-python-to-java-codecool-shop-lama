@@ -83,4 +83,9 @@ public class CustomerController {
         }
         return false;
     }
+
+    public static String logout(Request request, Response response) {
+        request.session().attribute("logged-in-user", null);
+        return "logged out";
+    }
 }
