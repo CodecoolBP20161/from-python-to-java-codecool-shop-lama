@@ -39,9 +39,12 @@ public class OrderController {
         Customer customer = CustomerController.makeNewCustomer(req);
         order.setCustomer(customer);
         customerDao.add(customer);
+        Customer customerInDb = customerDao.find(customer.getCustomerUUID());
         checkoutProcess.action(order);
         orderDao.updateStatus(order);
         orderDao.updateCustomer(customerDao.find(customer.getCustomerUUID()), order);
+        orderDao.updateBillingAddress(customerDao.getBillingAddressId(customer.getCustomerUUID()), order);
+        orderDao.updateShippingAddress(customerDao.getShippingAddressId(customer.getCustomerUUID()), order);
         return true;
     }
 

@@ -66,7 +66,6 @@
 
     function checkEmail(input) {
         $.get("/api/checkemail", {email:input.value}).done(function (resp) {
-            console.log(resp);
             if (!resp){
                 input.setCustomValidity('Email is already in use');
             } else {
@@ -83,7 +82,6 @@
             async: false,
             data: {user_name:input.value},
             success : function(resp) {
-                console.log(resp);
                 if (!resp){
                     input.setCustomValidity('UserName is already in use');
                 } else {

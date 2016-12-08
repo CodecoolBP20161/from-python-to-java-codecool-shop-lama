@@ -32,8 +32,6 @@ public class CustomerController {
         CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
         customerDao.add(customer);
         String salt = passwordHasher.generateSalt();
-        System.out.println(req.queryParams("password"));
-        System.out.println((req.queryParams("password")).toString());
         String password = passwordHasher.sha256(salt + req.queryParams("password"));
         customerDao.addUser(req.queryParams("userName"), req.queryParams("email"), salt, password, customerDao.find(customer.getCustomerUUID()).getId());
     }

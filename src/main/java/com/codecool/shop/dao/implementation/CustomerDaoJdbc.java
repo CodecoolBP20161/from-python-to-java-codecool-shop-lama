@@ -82,7 +82,7 @@ public class CustomerDaoJdbc implements CustomerDao {
                     .prepareStatement("SELECT * FROM customer WHERE id = ?;");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Customer customer = new Customer(resultSet.getString("name"),
                         resultSet.getString("email"), resultSet.getString("phoneNumber"));
                 customer.setId(resultSet.getInt("id"));
@@ -102,7 +102,7 @@ public class CustomerDaoJdbc implements CustomerDao {
                     .prepareStatement("SELECT * FROM customer WHERE customer_uuid = ?;");
             preparedStatement.setString(1, customerUUID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Customer customer = new Customer(resultSet.getString("name"),
                         resultSet.getString("email"), resultSet.getString("phone_number"));
                 customer.setId(resultSet.getInt("id"));
@@ -133,7 +133,7 @@ public class CustomerDaoJdbc implements CustomerDao {
         try (Statement statement = databaseConnection.createStatement();
              ResultSet resultSet = statement.executeQuery(query);
         ){
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Customer actCustomer = new Customer(resultSet.getString("name"),
                         resultSet.getString("email"), resultSet.getString("phoneNumber"));
                 actCustomer.setId(resultSet.getInt("id"));
@@ -190,5 +190,39 @@ public class CustomerDaoJdbc implements CustomerDao {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public int getBillingAddressId(String uuid) {
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT billing_address FROM customer WHERE customer_uuid = ?;")) {
+            preparedStatement.setString(1, uuid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("billing_address");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
+
+    @Override
+    public int getShippingAddressId(String uuid) {
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT shipping_address FROM customer WHERE customer_uuid = ?;")) {
+            preparedStatement.setString(1, uuid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("shipping_address");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return 0;
     }
 }
