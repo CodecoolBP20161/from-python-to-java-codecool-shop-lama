@@ -1,6 +1,6 @@
-import com.codecool.shop.controller.OrderController;
-import com.codecool.shop.controller.ProductController;
-import com.codecool.shop.controller.DbPopulator;
+import com.codecool.shop.controller.*;
+import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
+import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
@@ -23,27 +23,35 @@ public class Main {
 
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
+        get("/registration", CustomerController::renderRegistration, new ThymeleafTemplateEngine());
+
         post("/add", (request, response) -> {
             OrderController.addProductToCart(request);
             return ((Order) request.session().attribute("userOrder")).sumProductsQuantity();
         });
 
         // modify quantities
-        post("/remove", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), -1);
+        post("/remove_one_item", (req, res) -> {
+            OrderController.changeQuantity(req, res, -1);
             res.redirect("/cart");
             return null;
         });
 
-        post("/add_item", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).changeQuantity(req.queryParams("id"), 1);
+        post("/add_one_item", (req, res) -> {
+            OrderController.changeQuantity(req, res, 1);
             res.redirect("/cart");
             return null;
         });
 
         post("/remove_all", (req, res) -> {
-            ((Order) req.session().attribute("userOrder")).removeItem(req.queryParams("id"));
+            OrderController.removeProductFromOrder(req, res);
             res.redirect("/cart");
+            return null;
+        });
+
+        post("/register", (req, res) -> {
+            CustomerController.registration(req);
+            res.redirect("/");
             return null;
         });
 
@@ -59,6 +67,23 @@ public class Main {
         });
 
         get("/payment", (req, res) -> "payment");
+
+        get("/api/checkemail", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkEmail(request.queryParams("email"));
+        });
+
+        //TODO: place these into a service!
+        get("/api/checkuser", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkUserName(request.queryParams("user_name"));
+        });
+        get("/api/checkuser", (request, response) -> {
+            CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
+            return customerDao.checkUserName(request.queryParams("user_name"));
+        });
+        get("/validate-user", CustomerController::loginValidation);
+        get("/logout-user", CustomerController::logout);
 
     }
 
