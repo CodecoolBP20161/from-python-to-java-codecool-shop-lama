@@ -1,6 +1,8 @@
-import com.codecool.shop.controller.*;
+import com.codecool.shop.controller.CustomerController;
+import com.codecool.shop.controller.DbPopulator;
+import com.codecool.shop.controller.OrderController;
+import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
-import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
@@ -66,7 +68,7 @@ public class Main {
             return null;
         });
 
-        get("/payment", (req, res) -> "payment");
+        get("/payment", OrderController::renderPayment, new ThymeleafTemplateEngine());
 
         get("/api/checkemail", (request, response) -> {
             CustomerDaoJdbc customerDao = CustomerDaoJdbc.getInstance();
