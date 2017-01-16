@@ -70,6 +70,11 @@ public class OrderController {
         return new ModelAndView(params, "product/checkout");
     }
 
+    public static ModelAndView renderPayment(Request req, Response res) {
+        Map params = new HashMap<>();
+        return new ModelAndView(params, "product/payment");
+    }
+
     public static void removeProductFromOrder(Request req, Response res) {
         Order order = req.session().attribute("userOrder");
         order.removeItem(req.queryParams("id"));
