@@ -39,9 +39,15 @@ function loginValidation() {
     $.get("/validate-user", {user_name: document.getElementById("input_user_name").value,
     password: document.getElementById("input_password").value}).done(function (resp) {
         if (resp === "false"){
+
+            console.log("failed to logged in")
+
             document.getElementById("input_password").setCustomValidity('Wrong username OR password');
         } else {
             // input is valid -- reset the error message
+
+            console.log("logged in")
+
             document.getElementById("input_password").setCustomValidity('');
             $("#log_in_modal").hide();
             $("#log_out_btn").show();
