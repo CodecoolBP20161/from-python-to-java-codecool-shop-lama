@@ -15,11 +15,9 @@ public class Main {
         staticFileLocation("/public");
         port(8888);
 
-        DbPopulator.populateData();
-
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
-        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
+        get("/cart", OrderController::renderCart, new ThymeleafTemplateEngine());
 
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
