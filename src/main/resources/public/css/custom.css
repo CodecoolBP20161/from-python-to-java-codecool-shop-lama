@@ -159,3 +159,19 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.info-box {
+    margin: auto;
+    text-align: center;
+}
+
+.info-box p{
+    font-size: 20px;
+    text-align: center;
+}
+
+.info-box a{
+    text-decoration: none;
+    font-size: 50px;
+    margin-top: 20px;
+}
