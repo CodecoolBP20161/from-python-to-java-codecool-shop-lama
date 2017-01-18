@@ -66,7 +66,19 @@ public class AddressDaoJdbc implements AddressDao {
         return 0;
     }
 
-    private int findAddressID(Address address){
-        return 0;
-    }
+//    private int findAddressID(int id){
+//        try {
+//            PreparedStatement preparedStatement = databaseConnection
+//                    .prepareStatement("SELECT * FROM address WHERE id = ?;");
+//            preparedStatement.setInt(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                Address address = new Address(resultSet.getString("name")
+////                return customer;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

@@ -57,6 +57,16 @@ public class OrderController {
         return new ModelAndView(params, "product/shoppingCart");
     }
 
+    public static ModelAndView renderAdminPage(Request req, Response res) {
+        Map params = new HashMap<>();
+        for (Order order : orderDao.getAll()) {
+            System.out.println(order.getCustomer().getName());
+        }
+        params.put("orders", orderDao.getAll());
+        return new ModelAndView(params, "product/admin");
+
+    }
+
     private static void makeSessionOrderIfNecessary(Request req) {
         if (req.session().attribute("userOrder") == null) {
             Order order = new Order();

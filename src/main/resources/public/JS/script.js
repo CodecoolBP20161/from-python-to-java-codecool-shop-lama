@@ -24,6 +24,11 @@ $(document).ready(function () {
     span.onclick = function() {
         LogInModal.style.display = "none";
     };
+
+    $("#table_row").click(function(){
+        $("#table_fade").slideDown(400, function(){});
+    });
+
     window.onclick = function(event) {
         if (event.target == LogInModal) {
             LogInModal.style.display = "none";

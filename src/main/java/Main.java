@@ -84,6 +84,7 @@ public class Main {
         });
         get("/validate-user", CustomerController::loginValidation);
         get("/logout-user", CustomerController::logout);
+        get("/admin", OrderController::renderAdminPage, new ThymeleafTemplateEngine());
 
     }
 
