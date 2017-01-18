@@ -1,30 +1,42 @@
 package com.codecool.shop.delivery;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import org.apache.http.client.utils.URIBuilder;
+
+import java.util.*;
 
 /**
  * Created by prezi on 2017. 01. 16..
  */
 public class RoutePlanner {
-    private HashMap<Set<String>, Long> locationGraph;
-    private List solutionList;
+    private static final String API_URL = "http://0.0.0.0:60003/api/timecalculator";
+    private HashMap<Set<String>, Long> distanceMap;
 
     public RoutePlanner(ArrayList<String> listOfLocations){
         // todo: use method that transfers input to locationGraph and saves it
     }
 
-    private HashMap<Set<String>, Long> createLocationGraph(ArrayList<String> listOfLocations){
-        // todo: transfers input to locationGraph and saves it
-        // example: {(Bp, Miskolc) : 666}
+    private HashMap<Set<String>, Long> createDistanceMap(ArrayList<String> listOfLocations){
+        HashMap<Set<String>, Long> distanceMap = new HashMap<>();
+        for (int i = 0; i < listOfLocations.size(); i++) {
+            for (int j = i; j < listOfLocations.size(); j++) {
+                Set locationPair = new HashSet<>();
+                locationPair.add(listOfLocations.get(i));
+                locationPair.add(listOfLocations.get(j));
+                long distance = getDistance(listOfLocations.get(i), listOfLocations.get(j));
+                distanceMap.put(locationPair, distance);
+            }
+        }
+
         return null;
     }
 
-    private Long calculateTime(Set<String> locationPair){
-        // todo: use the API to calculate the travel time
-        return null;
+    private Long getDistance(String startLocation, String endLocation){
+        //
+        //
+        // import Uri builder and etc
+        //
+        //
+        return (long) Math.random() * 100;
     }
 
     private void TravellingSalesman(){
