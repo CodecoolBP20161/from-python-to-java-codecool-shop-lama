@@ -51,8 +51,7 @@ public class OrderController {
     // rendering cart.html template
     public static ModelAndView renderCart(Request req, Response res) {
         // available session check
-        makeSessionOrderIfNecessary(req);
-
+        if (req.session().attribute("userOrder") == null) res.redirect("/");
         Map params = new HashMap<>();
         params.put("order", req.session().attribute("userOrder"));
         return new ModelAndView(params, "product/shoppingCart");
