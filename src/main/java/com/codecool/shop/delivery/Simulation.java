@@ -7,7 +7,7 @@ public class Simulation {
     double startingTemperature;
     int numberOfIterations;
     double coolingRate;
-    private Route bestRoute;
+    public Route solution;
 
     public Simulation(Route route, double startingTemperature, int numberOfIterations, double coolingRate){
         this.route = route;
@@ -36,6 +36,7 @@ public class Simulation {
                 continue;
             }
         }
-        this.bestRoute = bestSolution;
+        this.solution = bestSolution;
     }
+
 }

@@ -55,4 +55,8 @@ public class Route {
         locationPair.add(endLocation);
         return distanceMap.get(locationPair);
     }
+
+    public ArrayList<String> getRoute(){
+        return this.route;
+    }
 }
