@@ -2,7 +2,6 @@ package com.codecool.shop.user_service;
 
 import com.codecool.shop.model.DatabaseConnection;
 import com.codecool.shop.user_service.controller.UserServiceController;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
