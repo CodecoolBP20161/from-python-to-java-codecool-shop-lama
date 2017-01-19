@@ -1,5 +1,6 @@
 package com.codecool.shop.order.implementation;
 
+import com.codecool.shop.model.customer.Address;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductDaoJdbc;
@@ -22,6 +23,7 @@ public class Order implements Orderable {
     private ArrayList<LineItem> itemsToOrder;
     private Status status;
     private Customer customer;
+    private Address shippingAddress;
 
     {
         itemsToOrder = new ArrayList<>();
@@ -136,5 +138,13 @@ public class Order implements Orderable {
 
     public void setOrderUUID(String orderUUID) {
         this.orderUUID = orderUUID;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 }
