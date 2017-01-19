@@ -1,5 +1,4 @@
 import com.codecool.shop.controller.CustomerController;
-import com.codecool.shop.controller.DbPopulator;
 import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
@@ -85,7 +84,6 @@ public class Main {
         get("/validate-user", CustomerController::loginValidation);
         get("/logout-user", CustomerController::logout);
         get("/admin", OrderController::renderAdminPage, new ThymeleafTemplateEngine());
-
     }
 
 }

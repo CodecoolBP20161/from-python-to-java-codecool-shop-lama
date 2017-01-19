@@ -51,17 +51,19 @@
             <td th:text="*{order.getShippingAddress().formatAddress()}"></td>
             <td th:text="*{order.getStatus()}"></td>
         </tr>
-            <tr id = "table_fade">
-                <td>Botyka</td>
-                <td>Peterd</td>
-            </tr>
 
         </th:block>
     </table>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default">Calculate</button>
+        <button type="button" class="btn btn-default" id="printlabels" th:attr="data-orders-json=${jsonDatas}">
+            Print labels
+        </button>
+    </div>
 
 
 </div>
 
-<script type="text/javascript" src="/JS/script.js"></script>
+<script type="text/javascript" src="/JS/script_admin.js"></script>
 </body>
 </html>
