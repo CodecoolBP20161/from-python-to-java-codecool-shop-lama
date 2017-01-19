@@ -24,11 +24,19 @@ $(document).ready(function () {
     span.onclick = function() {
         LogInModal.style.display = "none";
     };
+
+    $("#table_row").click(function(){
+        $("#table_fade").slideDown(400, function(){});
+    });
+
     window.onclick = function(event) {
         if (event.target == LogInModal) {
             LogInModal.style.display = "none";
         }
     };
+
+
+
 
     $("#login_submit_btn").click(loginValidation);
     $("#log_out_btn").click(logout);
@@ -39,15 +47,16 @@ function loginValidation() {
     $.get("/validate-user", {user_name: document.getElementById("input_user_name").value,
     password: document.getElementById("input_password").value}).done(function (resp) {
         if (resp === "false"){
-            document.getElementById("input_password").setCustomValidity('Wrong username OR password');
+            alert('Wrong username OR password');
         } else {
             // input is valid -- reset the error message
-            document.getElementById("input_password").setCustomValidity('');
             $("#log_in_modal").hide();
             $("#log_out_btn").show();
             $("#log_in_btn").hide();
 
         }
+    }).fail(function (resp) {
+        console.log(resp)
     })
 }
 

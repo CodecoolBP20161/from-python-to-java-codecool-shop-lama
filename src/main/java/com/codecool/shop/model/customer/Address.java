@@ -34,6 +34,10 @@ public class Address {
         return city;
     }
 
+    public String formatAddress() {
+        return zipcode + " " + city + ", " + address + " (" + country + ")";
+    }
+
     public String getZipcode() {
         return zipcode;
     }
