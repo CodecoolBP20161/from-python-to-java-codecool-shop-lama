@@ -59,10 +59,18 @@ public class OrderController {
 
     public static ModelAndView renderAdminPage(Request req, Response res) {
         Map params = new HashMap<>();
+        String jsonDatas = "[";
         for (Order order : orderDao.getAll()) {
-            System.out.println(order.getCustomer().getName());
+            jsonDatas += "{name: " + order.getCustomer().getName();
+            jsonDatas += ", city: " + order.getShippingAddress().getCity();
+            jsonDatas += ", address: " + order.getShippingAddress().getAddress();
+            jsonDatas += ", id: " + order.getId() + "},";
         }
+        jsonDatas = jsonDatas.substring(0, jsonDatas.length()-1);
+        jsonDatas += "]";
         params.put("orders", orderDao.getAll());
+        params.put("jsonDatas", jsonDatas);
+        System.out.println(jsonDatas);
         return new ModelAndView(params, "product/admin");
 
     }

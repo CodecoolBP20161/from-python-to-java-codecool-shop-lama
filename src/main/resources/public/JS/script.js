@@ -35,6 +35,9 @@ $(document).ready(function () {
         }
     };
 
+
+
+
     $("#login_submit_btn").click(loginValidation);
     $("#log_out_btn").click(logout);
 
