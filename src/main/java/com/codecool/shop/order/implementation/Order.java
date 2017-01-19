@@ -24,8 +24,6 @@ public class Order implements Orderable {
     private Status status;
     private Customer customer;
     private Address shippingAddress;
-    private Address billingAddress;
-
 
     {
         itemsToOrder = new ArrayList<>();
@@ -142,19 +140,11 @@ public class Order implements Orderable {
         this.orderUUID = orderUUID;
     }
 
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-
     public void setShippingAddress(Address shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 }

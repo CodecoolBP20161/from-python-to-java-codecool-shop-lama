@@ -36,21 +36,21 @@
 
     <table class="table">
         <thead>
-            <th>id</th>
-            <th>Customer name</th>
+        <th>id</th>
+        <th>Customer name</th>
 
-            <th>Phone number</th>
-            <th>Shipping address</th>
-            <th>Status</th>
+        <th>Phone number</th>
+        <th>Shipping address</th>
+        <th>Status</th>
         </thead>
         <th:block th:each="order,iterStat : ${orders}">
-        <tr id="table_row">
-            <td th:text="*{order.getId()}"></td>
-            <td th:text="*{order.getCustomer().getName()}"></td>
-            <td th:text="*{order.getCustomer().getPhoneNumber()}"></td>
-            <td th:text="*{order.getShippingAddress().formatAddress()}"></td>
-            <td th:text="*{order.getStatus()}"></td>
-        </tr>
+            <tr id="table_row">
+                <td th:text="*{order.getId()}"></td>
+                <td th:text="*{order.getCustomer().getName()}"></td>
+                <td th:text="*{order.getCustomer().getPhoneNumber()}"></td>
+                <td th:text="*{order.getShippingAddress().formatAddress()}"></td>
+                <td th:text="*{order.getStatus()}"></td>
+            </tr>
 
         </th:block>
     </table>

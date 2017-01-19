@@ -7,6 +7,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,28 @@ public class AdminController {
 
     public static ModelAndView renderAdminPage(Request req, Response res) {
         Map params = new HashMap<>();
+        ArrayList<Order> all = orderDao.getAll();
+
+        params.put("orders", orderDao.getAll());
+        params.put("jsonDatas", createJson(all));
+        return new ModelAndView(params, "product/admin");
+
+    }
+
+    private ArrayList<String> createAddressList(ArrayList<Order> all){
+        ArrayList<String> addressList = new ArrayList<>();
+        for (Order order: all){
+            String address = order.getShippingAddress().getZipcode() + " ";
+            address += order.getShippingAddress().getCity() + " ";
+            address += order.getShippingAddress().getAddress();
+            addressList.add(address);
+        }
+        return addressList;
+    }
+
+    private static String createJson(ArrayList<Order> all) {
         String jsonDatas = "[";
-        for (Order order : orderDao.getAll()) {
+        for (Order order : all) {
             jsonDatas += "{name: " + order.getCustomer().getName();
             jsonDatas += ", city: " + order.getShippingAddress().getCity();
             jsonDatas += ", address: " + order.getShippingAddress().getAddress();
@@ -28,11 +49,7 @@ public class AdminController {
         }
         jsonDatas = jsonDatas.substring(0, jsonDatas.length()-1);
         jsonDatas += "]";
-        params.put("orders", orderDao.getAll());
-        params.put("jsonDatas", jsonDatas);
-        System.out.println(jsonDatas);
-        return new ModelAndView(params, "product/admin");
-
+        return jsonDatas;
     }
 
 }
