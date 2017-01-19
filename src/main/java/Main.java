@@ -1,5 +1,5 @@
-import com.codecool.shop.controller.AdminController;
 import com.codecool.shop.controller.CustomerController;
+import com.codecool.shop.controller.DbPopulator;
 import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.implementation.CustomerDaoJdbc;
@@ -17,9 +17,11 @@ public class Main {
         staticFileLocation("/public");
         port(8888);
 
+        DbPopulator.populateData();
+
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
-        get("/cart", OrderController::renderCart, new ThymeleafTemplateEngine());
+        get("/cart", ProductController::renderCart, new ThymeleafTemplateEngine());
 
         get("/filter", ProductController::renderProducts, new ThymeleafTemplateEngine());
 
@@ -84,7 +86,7 @@ public class Main {
         });
         get("/validate-user", CustomerController::loginValidation);
         get("/logout-user", CustomerController::logout);
-        get("/admin", AdminController::renderAdminPage, new ThymeleafTemplateEngine());
+
     }
 
 }
