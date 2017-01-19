@@ -65,7 +65,7 @@ public class CustomerController {
     public static boolean loginValidation(Request request, Response response) {
         String userName = request.queryParams("user_name");
         String password = request.queryParams("password");
-        logger.debug("user_name: " + userName);
+        logger.info("user_name: " + userName);
         try {
             if (UserServiceController.loginValidation(userName, password).equals("true")) {
                 logger.info("login successful");

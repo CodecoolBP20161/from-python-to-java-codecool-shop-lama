@@ -4,6 +4,8 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.model.customer.Customer;
 import com.codecool.shop.order.implementation.Order;
 
+import java.util.ArrayList;
+
 /**
  * Created by annakertesz on 12/6/16.
  */
@@ -18,4 +20,5 @@ public interface OrderDao {
     Order find(String orderUUID);
     void removeProductFromOrder(Order order, int productId);
     void changeQuantity(Order order, int productId, int changeBy);
+    ArrayList<Order> getAll();
 }
