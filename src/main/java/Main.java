@@ -1,3 +1,4 @@
+import com.codecool.shop.controller.AdminController;
 import com.codecool.shop.controller.CustomerController;
 import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
@@ -83,7 +84,7 @@ public class Main {
         });
         get("/validate-user", CustomerController::loginValidation);
         get("/logout-user", CustomerController::logout);
-        get("/admin", OrderController::renderAdminPage, new ThymeleafTemplateEngine());
+        get("/admin", AdminController::renderAdminPage, new ThymeleafTemplateEngine());
     }
 
 }
