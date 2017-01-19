@@ -84,6 +84,11 @@ public class Main {
         get("/validate-user", CustomerController::loginValidation);
         get("/logout-user", CustomerController::logout);
         get("/admin", AdminController::renderAdminPage, new ThymeleafTemplateEngine());
+//        get("/admin/calculate", (request, response) -> {
+//            System.out.println(AdminController.getRoutes());
+////            response.redirect("/admin");
+//            return "zser";
+//        });
 
     }
 

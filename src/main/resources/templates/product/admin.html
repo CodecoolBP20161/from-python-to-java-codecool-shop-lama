@@ -55,10 +55,20 @@
         </th:block>
     </table>
     <div class="btn-group">
-        <button type="button" class="btn btn-default">Calculate</button>
+        <button type="button" class="btn btn-default" id="calculate">Calculate</button>
         <button type="button" class="btn btn-default" id="printlabels" th:attr="data-orders-json=${jsonDatas}">
             Print labels
         </button>
+    </div>
+    <div id = "calculation">
+        <table class="table">
+            <th:block th:each="address,iterStat : ${calculation}">
+                <tr id="table_row">
+                    <td th:text="*{address}"></td>
+                </tr>
+
+            </th:block>
+        </table>
     </div>
 
 

@@ -23,6 +23,7 @@ public class Simulation {
         Route currentSolution = bestSolution;
 
         for (int i = 0; i < numberOfIterations; i++) {
+
             if (t > 0.1) {
                 currentSolution.swapLocations();
                 long currentDistance = currentSolution.calculateTotalDistance();
@@ -35,6 +36,12 @@ public class Simulation {
             } else {
                 continue;
             }
+            if (i%100==0) {
+                System.out.println("iteration: " +i);
+                System.out.println("best distance: " + bestDistance);
+                System.out.println("temp: " + t);
+            }
+
         }
         this.solution = bestSolution;
     }
