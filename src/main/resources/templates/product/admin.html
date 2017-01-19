@@ -36,29 +36,39 @@
 
     <table class="table">
         <thead>
-            <th>id</th>
-            <th>Customer name</th>
+        <th>id</th>
+        <th>Customer name</th>
 
-            <th>Phone number</th>
-            <th>Shipping address</th>
-            <th>Status</th>
+        <th>Phone number</th>
+        <th>Shipping address</th>
+        <th>Status</th>
         </thead>
         <th:block th:each="order,iterStat : ${orders}">
-        <tr id="table_row">
-            <td th:text="*{order.getId()}"></td>
-            <td th:text="*{order.getCustomer().getName()}"></td>
-            <td th:text="*{order.getCustomer().getPhoneNumber()}"></td>
-            <td th:text="*{order.getShippingAddress().formatAddress()}"></td>
-            <td th:text="*{order.getStatus()}"></td>
-        </tr>
+            <tr id="table_row">
+                <td th:text="*{order.getId()}"></td>
+                <td th:text="*{order.getCustomer().getName()}"></td>
+                <td th:text="*{order.getCustomer().getPhoneNumber()}"></td>
+                <td th:text="*{order.getShippingAddress().formatAddress()}"></td>
+                <td th:text="*{order.getStatus()}"></td>
+            </tr>
 
         </th:block>
     </table>
     <div class="btn-group">
-        <button type="button" class="btn btn-default">Calculate</button>
+        <button type="button" class="btn btn-default" id="calculate">Calculate</button>
         <button type="button" class="btn btn-default" id="printlabels" th:attr="data-orders-json=${jsonDatas}">
             Print labels
         </button>
+    </div>
+    <div id = "calculation">
+        <table class="table">
+            <th:block th:each="address,iterStat : ${calculation}">
+                <tr id="table_row">
+                    <td th:text="*{address}"></td>
+                </tr>
+
+            </th:block>
+        </table>
     </div>
 
 

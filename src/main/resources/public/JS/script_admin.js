@@ -1,5 +1,5 @@
 /**
- * Created by annakertesz on 1/18/17.
+ * Created by annakertesz on 1/19/17.
  */
 $(document).ready(function () {
 
@@ -10,11 +10,14 @@ $(document).ready(function () {
         // var url = "http://localhost:60000/api/create-label";
         // console.log(url+$.param(jsonData));
         $.ajax({
-        url: "http://localhost:60000/api/create-label",
-        data: {orders: jsonData},
-        success: function(){
-            window.open(this.url)
-        }
+            url: "http://localhost:60000/api/create-label",
+            data: {orders: jsonData},
+            success: function(){
+                window.open(this.url)
+            }
         });
     });
+    $("#calculate").click(function() {
+        $("#calculation").slideDown();
+    })
 });

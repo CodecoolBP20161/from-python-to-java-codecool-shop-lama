@@ -69,6 +69,38 @@ public class OrderDaoJdbc implements OrderDao{
     }
 
     @Override
+    public ArrayList<Order> getAll() {
+        ArrayList<Order> allOrders = new ArrayList<>();
+        try (PreparedStatement preparedStatement = databaseConnection
+                .prepareStatement("SELECT o.id AS order_id, o.status AS status, c.name AS name, c.email AS email, c.phone_number AS phone," +
+                        " a.city AS city, a.address AS address, a.zip_code AS zipcode, a.country AS country FROM orders o INNER JOIN customer c \n" +
+                        "ON o.customer=c.id INNER JOIN address a ON o.billing_address=a.id;")){
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                System.out.println(resultSet.getInt("order_id"));
+                Address address = new Address(
+                        resultSet.getString("country"),
+                        resultSet.getString("city"),
+                        resultSet.getString("zipcode"),
+                        resultSet.getString("address"));
+                Customer customer = new Customer(
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone"));
+                Order order = new Order();
+                order.setId(resultSet.getInt("order_id"));
+                order.setShippingAddress(address);
+                order.setCustomer(customer);
+                order.setStatus(Status.valueOf(resultSet.getString("status")));
+                allOrders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allOrders;
+    }
+
+    @Override
     public void updateStatus(Order order) {
         try(PreparedStatement preparedStatement = databaseConnection
                 .prepareStatement("UPDATE orders SET status = ? WHERE id = ?;")) {
@@ -154,38 +186,6 @@ public class OrderDaoJdbc implements OrderDao{
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public ArrayList<Order> getAll() {
-        ArrayList<Order> allOrders = new ArrayList<>();
-        try (PreparedStatement preparedStatement = databaseConnection
-                .prepareStatement("SELECT o.id AS order_id, o.status AS status, c.name AS name, c.email AS email, c.phone_number AS phone," +
-                        " a.city AS city, a.address AS address, a.zip_code AS zipcode, a.country AS country FROM orders o INNER JOIN customer c \n" +
-                        "ON o.customer=c.id INNER JOIN address a ON o.billing_address=a.id;")){
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                System.out.println(resultSet.getInt("order_id"));
-                Address address = new Address(
-                        resultSet.getString("country"),
-                        resultSet.getString("city"),
-                        resultSet.getString("zipcode"),
-                        resultSet.getString("address"));
-                Customer customer = new Customer(
-                        resultSet.getString("name"),
-                        resultSet.getString("email"),
-                        resultSet.getString("phone"));
-                Order order = new Order();
-                order.setId(resultSet.getInt("order_id"));
-                order.setShippingAddress(address);
-                order.setCustomer(customer);
-                order.setStatus(Status.valueOf(resultSet.getString("status")));
-                allOrders.add(order);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return allOrders;
     }
 
     @Override

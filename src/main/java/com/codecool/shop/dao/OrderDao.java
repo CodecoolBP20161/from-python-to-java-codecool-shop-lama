@@ -20,5 +20,5 @@ public interface OrderDao {
     Order find(String orderUUID);
     void removeProductFromOrder(Order order, int productId);
     void changeQuantity(Order order, int productId, int changeBy);
-    ArrayList<Order> getAll();
+    public ArrayList<Order> getAll();
 }
