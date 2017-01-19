@@ -21,7 +21,7 @@ public class AdminController {
     public static ModelAndView renderAdminPage(Request req, Response res) {
         Map params = new HashMap<>();
         ArrayList<Order> all = orderDao.getAll();
-//dgdf
+
         params.put("orders", orderDao.getAll());
         params.put("jsonDatas", createJson(all));
         return new ModelAndView(params, "product/admin");
