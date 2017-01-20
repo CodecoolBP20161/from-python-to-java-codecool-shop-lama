@@ -25,6 +25,7 @@ public class AdminController {
         params.put("orders", orderDao.getAll());
         params.put("calculation", getRoutes());
         params.put("jsonDatas", createJson(all));
+        System.out.println(createJson(all));
         return new ModelAndView(params, "product/admin");
     }
 
@@ -45,7 +46,7 @@ public class AdminController {
             jsonDatas += "{name: " + order.getCustomer().getName();
             jsonDatas += ", city: " + order.getShippingAddress().getCity();
             jsonDatas += ", address: " + order.getShippingAddress().getAddress();
-            jsonDatas += ", id: " + order.getId() + "},";
+            jsonDatas += ", id: " + order.getOrderUUID() + "},";
         }
         jsonDatas = jsonDatas.substring(0, jsonDatas.length()-1);
         jsonDatas += "]";

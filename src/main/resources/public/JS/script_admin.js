@@ -13,7 +13,9 @@ $(document).ready(function () {
             url: "http://localhost:60000/api/create-label",
             data: {orders: jsonData},
             success: function(){
-                window.open(this.url)
+                console.log(this.url);
+                window.open(this.url);
+
             }
         });
     });

@@ -32,7 +32,6 @@ public class RoutePlanner {
                 locationPair.add(listOfLocations.get(j));
                 long distance = 0;
                     try {
-                        System.out.println("in try");
                         distance = getDistance(listOfLocations.get(i), listOfLocations.get(j));
                     } catch (IOException e) {
                         e.printStackTrace();
